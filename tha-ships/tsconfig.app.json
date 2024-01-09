@@ -1,13 +1,33 @@
 {
-    "extends": "@vue/tsconfig/tsconfig.dom.json",
-    "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-    "exclude": ["src/**/__tests__/*"],
     "compilerOptions": {
-        "composite": true,
-        "noEmit": true,
-        "baseUrl": ".",
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "allowJs": false,
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "ESNext",
         "paths": {
-            "@/*": ["./src/*"]
-        }
-    }
+            "@/src/*": ["./src/*"],
+            "@/views/*": ["./src/views/*"],
+            "@/components/*": ["./src/components/*"],
+            "@/types/*": ["./src/types/*"],
+            "@/stores/*": ["./src/stores/*"],
+            "@/api/*": ["./src/api/*"],
+            "@/router/*": ["./src/router/*"],
+            "@/assets/*": ["./src/assets/*"],
+            "bootstrap/dist/js/bootstrap": ["./node_modules/types/bootstrap"]
+        },
+        /* Bundler mode */
+        "moduleResolution": "node",
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "preserve"
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+    "references": [{ "path": "./tsconfig.node.json" }]
 }
