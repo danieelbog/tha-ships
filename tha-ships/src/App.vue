@@ -1,5 +1,5 @@
 <template>
-    <main class="bg-light h-100">
+    <main class="bg-light">
         <component :is="layoutComponent"></component>
     </main>
 </template>

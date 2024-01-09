@@ -1,6 +1,6 @@
 import { api } from '@/api/index';
 import { defineStore } from 'pinia';
-import { IAuthToken } from '../types/IAuthToken';
+import { IAuthToken } from '../../types/IAuthToken';
 import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -19,7 +19,9 @@ export const useAuthStore = defineStore('auth', () => {
     const getAuthTokenFromLocalStorage = () => {
         if (authToken.value && authToken?.value?.token) return;
         const storedAuthTokenStr = localStorage.getItem('authToken');
-        const storedAuthToken = storedAuthTokenStr ? (JSON.parse(storedAuthTokenStr) as IAuthToken) : null;
+        const storedAuthToken = storedAuthTokenStr
+            ? (JSON.parse(storedAuthTokenStr) as IAuthToken)
+            : null;
         if (storedAuthToken && storedAuthToken.token) {
             setAuthToken(storedAuthToken);
         }

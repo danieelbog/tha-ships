@@ -3,12 +3,10 @@
         <div
             class="d-flex align-items-center justify-content-center mx-2"
             v-for="route in navigationRoutes"
-            v-bind="route.name"
-        >
+            v-bind:key="route.name">
             <router-link
                 :to="route.path"
-                :class="[route.path == currentRoute ? 'text-primary' : 'text-dark']"
-            >
+                :class="[route.path == currentRoute ? 'text-primary' : 'text-dark']">
                 {{ route.name }}</router-link
             >
         </div>

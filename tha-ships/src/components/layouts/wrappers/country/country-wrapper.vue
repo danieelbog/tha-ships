@@ -1,5 +1,5 @@
 <template>
-    <div>I am login</div>
+    <div class="col-6 country-wrapper"><slot></slot></div>
 </template>
 
 <script lang="ts">
@@ -11,3 +11,10 @@ export default defineComponent({
     }
 });
 </script>
+
+<style>
+.country-wrapper {
+    height: 100%;
+    overflow-y: scroll;
+}
+</style>

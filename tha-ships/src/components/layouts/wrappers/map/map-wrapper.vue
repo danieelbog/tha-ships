@@ -1,5 +1,5 @@
 <template>
-    <div>I am login</div>
+    <div class="col-6"><slot></slot></div>
 </template>
 
 <script lang="ts">

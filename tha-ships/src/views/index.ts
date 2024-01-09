@@ -17,10 +17,10 @@ export const routes = [
         path: '/',
         name: 'Dashboard',
         meta: {
-            allowAnonymous: false,
+            allowAnonymous: true,
             noLayout: false,
             pageTitle: 'Tha-Ships | Dashboard',
-            showInNavigation: true
+            showInNavigation: false
         } as IRouteMeta,
         component: () => import('./Dashboard/dashboard.vue')
     } as RouteRecordRaw

@@ -1,17 +1,14 @@
 <template>
     <RowHeaderWrapper>
-        <h2
-            v-if="headerTitle.length > 0"
-            class="text-center mt-5"
-        >
+        <h2 v-if="headerTitle.length > 0" class="text-center mt-5">
             {{ headerTitle }}
         </h2>
         <div v-if="messages.length > 0">
             <p
                 v-for="errorMessage in messages"
+                v-bind:key="errorMessage.toString()"
                 class="text-center my-3"
-                :class="[applyErrorStyle ? 'text-danger' : 'text-success']"
-            >
+                :class="[applyErrorStyle ? 'text-danger' : 'text-success']">
                 {{ errorMessage }}
             </p>
         </div>

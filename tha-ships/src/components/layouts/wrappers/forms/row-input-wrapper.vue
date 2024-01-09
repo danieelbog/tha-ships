@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import RowHeaderWrapper from "./row-header-wrapper.vue";
-import RowInputLabel from "@/components/layouts/labels/row-input-label.vue";
+import RowHeaderWrapper from './row-header-wrapper.vue';
+import RowInputLabel from '@/components/layouts/labels/row-input-label.vue';
 
 export default defineComponent({
     components: {
@@ -30,7 +30,7 @@ export default defineComponent({
             default: false
         }
     }
-})
+});
 </script>
 
 <style scoped></style>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useAuthStore } from '@/stores/auth.store';
+import { useAuthStore } from '@/src/stores/auth/auth.store';
 
 const api = createInstance('');
 export { api };

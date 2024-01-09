@@ -7,9 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import NavBar from "./navbar/navbar.vue";
-import Footer from "./footer/footer.vue";
+import { defineComponent } from 'vue';
+import NavBar from './navbar/navbar.vue';
+import Footer from './footer/footer.vue';
 
 export default defineComponent({
     components: {
@@ -17,11 +17,9 @@ export default defineComponent({
         Footer
     },
     setup() {
-
-
-        return {}
+        return {};
     }
-})
+});
 </script>
 
 <style scoped></style>
