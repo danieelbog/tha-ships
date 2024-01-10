@@ -10,7 +10,7 @@
             </span>
         </div>
         <div v-else>
-            <h5 class="card-text">Has no borders with other countries.</h5>
+            <p class="card-text">Has no borders with other countries.</p>
         </div>
     </div>
 </template>

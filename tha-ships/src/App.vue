@@ -19,7 +19,6 @@ export default defineComponent({
 
         onMounted(() => {
             setBootstrapComponents();
-
             document.getElementById('external-loader')?.remove();
         });
 

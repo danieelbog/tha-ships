@@ -29,13 +29,6 @@ export default defineComponent({
             type: Object as () => ICountryInfo,
             required: true
         }
-    },
-    setup(props) {
-        const hasBorders = computed(
-            () => props.countryInfo.borders && props.countryInfo.borders.length > 0
-        );
-
-        return { hasBorders };
     }
 });
 </script>

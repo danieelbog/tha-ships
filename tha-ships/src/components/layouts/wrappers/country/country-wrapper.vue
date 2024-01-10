@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import '@/assets/styles/scrollbar/solid-scrollbar.scss';
 
 export default defineComponent({
     setup() {
@@ -12,7 +13,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .country-wrapper {
     height: 100%;
     overflow-y: scroll;
