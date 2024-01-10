@@ -5,8 +5,8 @@
         </h2>
         <div v-if="messages.length > 0">
             <p
-                v-for="errorMessage in messages"
-                v-bind:key="errorMessage.toString()"
+                v-for="(errorMessage, index) in messages"
+                v-bind:key="index"
                 class="text-center my-3"
                 :class="[applyErrorStyle ? 'text-danger' : 'text-success']">
                 {{ errorMessage }}
