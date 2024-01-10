@@ -1,7 +1,7 @@
 <template>
     <div class="container main-wrapper">
         <div class="row">
-            <div class="col-12 p-2 my-4 border rounded">
+            <div class="col-12 p-2 my-3 border rounded">
                 <slot name="controls"></slot>
             </div>
             <div ref="contentContainer" class="col-12">

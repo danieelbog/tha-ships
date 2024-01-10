@@ -4,7 +4,11 @@
             <CountryFilter></CountryFilter>
         </template>
         <template #content>
-            <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
+            <div class="d-flex">
+                <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
+                <Info :infoText="'If on small screens, switch off the Fancy Mode'"></Info>
+            </div>
+
             <CountryWrapper>
                 <template #default>
                     <div v-if="switchValue">
@@ -42,6 +46,7 @@ import CountryCard from '@/components/cards/country/country-card.vue';
 import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
 import CountryFilter from '@/components/filter/country-filter.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
+import Info from '@/components/layouts/info/info.vue';
 
 export default defineComponent({
     components: {
@@ -51,7 +56,8 @@ export default defineComponent({
         CountryCard,
         FancyCountryCard,
         CountryFilter,
-        SwitchInput
+        SwitchInput,
+        Info
     },
     setup() {
         const countryInfos = ref<Array<ICountryInfo>>([]);
