@@ -1,13 +1,21 @@
 <template>
     <MainWrapper>
-        <template #controls>Controls hello</template>
+        <template #controls>
+            <CountryFilter></CountryFilter>
+        </template>
         <template #content>
             <CountryWrapper>
                 <template #default>
-                    <CountryCard
+                    <FancyCountryCard
                         v-for="countryInfo in countryInfos"
                         :key="countryInfo.name.official"
-                        :countryInfo="countryInfo"></CountryCard>
+                        :countryInfo="countryInfo"></FancyCountryCard>
+
+                    <!-- <CountryCard
+                        v-for="countryInfo in countryInfos"
+                        :key="countryInfo.name.official"
+                        :countryInfo="countryInfo">
+                    </CountryCard> -->
                 </template>
             </CountryWrapper>
             <MapWrapper>
@@ -26,20 +34,24 @@ import MainWrapper from '@/components/layouts/wrappers/main/main-wrapper.vue';
 import CountryWrapper from '@/components/layouts/wrappers/country/country-wrapper.vue';
 import MapWrapper from '@/components/layouts/wrappers/map/map-wrapper.vue';
 import CountryCard from '@/components/cards/country/country-card.vue';
+import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
+import CountryFilter from '@/components/filter/country-filter.vue';
 
 export default defineComponent({
     components: {
         MainWrapper,
         CountryWrapper,
         MapWrapper,
-        CountryCard
+        // CountryCard,
+        FancyCountryCard,
+        CountryFilter
     },
     setup() {
         const countryInfos = ref<Array<ICountryInfo>>([]);
         const countriesStore = useCountriesStore();
 
         onMounted(async () => {
-            countryInfos.value = await countriesStore.getCountries();
+            countryInfos.value = await countriesStore.getInitCountries();
         });
 
         return { countryInfos };
