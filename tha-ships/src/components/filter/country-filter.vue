@@ -7,21 +7,23 @@
             <FilterDropdown
                 :id="'countryPropertyDropdown'"
                 :label="'Select Country property:'"
-                :options="filteredProperties"
+                :filterProperties="filterProperties"
                 :selectedOption="selectedProperty"
                 :showMandatory="showMandatory"
-                @optionSelected="updateCountrySelectedProperty" />
+                @optionSelected="updateCountrySelectedProperty">
+            </FilterDropdown>
         </template>
         <template #filterOptionSelect>
             <FilterDropdown
                 :id="'filterOptionDropdown'"
                 :label="'Select Filter option:'"
-                :options="
+                :filterProperties="
                     selectedProperty === 'population' ? numberFilterOptions : textFilterOptions
                 "
                 :selectedOption="selectedFilter"
                 :showMandatory="showMandatory"
-                @optionSelected="updateSelectedFilterOption" />
+                @optionSelected="updateSelectedFilterOption">
+            </FilterDropdown>
         </template>
         <template #filterSearch>
             <FilterSearch
@@ -30,20 +32,25 @@
                 :selectedProperty="selectedProperty"
                 @searchValueEntered="onSearchValueEntered"
                 @resetFilterClicked="onResetFilterClicked"
-                @applyFilterClicked="onApplyFilterClicked" />
+                @applyFilterClicked="onApplyFilterClicked">
+            </FilterSearch>
         </template>
     </FilterWrapper>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
-import { ICountryInfo } from '@/types/ICountryInfo';
+import { defineComponent, ref, computed, Ref } from 'vue';
 
 import FilterWrapper from '@/components/layouts/wrappers/filter/filter-wrapper.vue';
 import FilterError from './filter-error.vue';
 import FilterDropdown from './filter-dropdown.vue';
 import FilterSearch from './filter-search.vue';
-import { numberFilterOptions, textFilterOptions } from '@/src/utils/filter-options';
+import {
+    IFilterApply,
+    filterProperties,
+    textFilterOptions,
+    numberFilterOptions
+} from '@/src/types/IFilter';
 
 export default defineComponent({
     components: {
@@ -52,34 +59,18 @@ export default defineComponent({
         FilterDropdown,
         FilterSearch
     },
-    setup() {
+    setup(props, { emit }) {
+        const searchValue: Ref<string | number> = ref('');
         const selectedProperty = ref('');
         const selectedFilter = ref('');
-        const searchValue = ref('');
         const errorMessage = ref('');
         const showErrorMessage = ref(false);
-
-        const countryInfoFilterProperties = {
-            name: {
-                official: ''
-            },
-            capital: [''],
-            population: 0,
-            borders: [''],
-            independent: false,
-            unMember: false,
-            region: '',
-            subregion: '',
-            flag: ''
-        } as ICountryInfo;
-
-        const filteredProperties = computed(() => Object.keys(countryInfoFilterProperties));
 
         const showMandatory = computed(
             () =>
                 selectedProperty.value.length > 0 ||
                 selectedFilter.value.length > 0 ||
-                searchValue.value.length > 0
+                searchValue.value.toString().length > 0
         );
 
         const updateCountrySelectedProperty = (value: string) => {
@@ -88,13 +79,11 @@ export default defineComponent({
         };
 
         const updateSelectedFilterOption = (value: string) => {
-            searchValue.value = '';
             selectedFilter.value = value;
         };
 
         const onSearchValueEntered = (value: string | number) => {
-            console.log('value', value);
-            searchValue.value = value.toString();
+            searchValue.value = value;
         };
 
         const onResetFilterClicked = () => {
@@ -103,6 +92,12 @@ export default defineComponent({
             searchValue.value = '';
             selectedFilter.value = '';
             selectedProperty.value = '';
+
+            emitFilterValuesToParent(
+                selectedProperty.value,
+                selectedFilter.value,
+                searchValue.value
+            );
         };
 
         const onApplyFilterClicked = () => {
@@ -129,13 +124,26 @@ export default defineComponent({
             }
 
             if (showErrorMessage.value) return;
-            // Rest of your filter logic
+
+            emitFilterValuesToParent(
+                selectedProperty.value,
+                selectedFilter.value,
+                searchValue.value
+            );
+        };
+
+        const emitFilterValuesToParent = (
+            selectedProperty: string,
+            selectedFilter: string,
+            searchValue: string | number
+        ) => {
+            emit('applyFilter', { selectedProperty, selectedFilter, searchValue } as IFilterApply);
         };
 
         return {
             selectedProperty,
             searchValue,
-            filteredProperties,
+            filterProperties,
             selectedFilter,
             numberFilterOptions,
             textFilterOptions,

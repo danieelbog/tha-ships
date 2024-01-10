@@ -2,8 +2,11 @@
     <div class="">
         <label :for="id">{{ label }} <span v-if="showMandatory" class="text-danger">*</span></label>
         <select :id="id" class="form-select form-select" v-model="internalSelectedOption">
-            <option v-for="option in options" :key="option" :value="option">
-                {{ option }}
+            <option
+                v-for="property in Object.keys(filterProperties)"
+                :key="property"
+                :value="property">
+                {{ filterProperties[property] }}
             </option>
         </select>
     </div>
@@ -14,16 +17,16 @@ import { defineComponent, PropType, ref, watch } from 'vue';
 
 export default defineComponent({
     props: {
+        id: {
+            type: String,
+            required: true
+        },
         label: {
             type: String,
             required: true
         },
-        options: {
-            type: Array as PropType<string[]>,
-            required: true
-        },
-        id: {
-            type: String,
+        filterProperties: {
+            type: Object as PropType<Record<string, string>>,
             required: true
         },
         selectedOption: {

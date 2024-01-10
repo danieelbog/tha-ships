@@ -49,8 +49,11 @@ export default defineComponent({
     setup(props, { emit }) {
         const internalsearchValue = ref(props.searchValue);
 
-        watch(internalsearchValue, (newVal) => {
-            emit('searchValueEntered', newVal);
+        watch(internalsearchValue, (newVal: string | number) => {
+            emit(
+                'searchValueEntered',
+                inputType.value == 'text' ? newVal.toString() : Number(newVal)
+            );
         });
 
         watch(

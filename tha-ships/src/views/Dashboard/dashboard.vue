@@ -1,27 +1,26 @@
 <template>
     <MainWrapper>
         <template #controls>
-            <CountryFilter></CountryFilter>
+            <CountryFilter @applyFilter="onApplyFilter"></CountryFilter>
         </template>
         <template #content>
             <div class="d-flex">
                 <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
                 <Info :infoText="'If on small screens, switch off the Fancy Mode'"></Info>
             </div>
-
             <CountryWrapper>
                 <template #default>
                     <div v-if="switchValue">
                         <FancyCountryCard
-                            v-for="countryInfo in countryInfos"
-                            :key="countryInfo.name.official"
+                            v-for="(countryInfo, index) in countryInfos"
+                            :key="index"
                             :countryInfo="countryInfo">
                         </FancyCountryCard>
                     </div>
                     <div v-else>
                         <CountryCard
-                            v-for="countryInfo in countryInfos"
-                            :key="countryInfo.name.official"
+                            v-for="(countryInfo, index) in countryInfos"
+                            :key="index"
                             :countryInfo="countryInfo">
                         </CountryCard>
                     </div>
@@ -47,6 +46,7 @@ import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-car
 import CountryFilter from '@/components/filter/country-filter.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 import Info from '@/components/layouts/info/info.vue';
+import { IFilterApply } from '@/src/types/IFilter';
 
 export default defineComponent({
     components: {
@@ -68,13 +68,19 @@ export default defineComponent({
             switchValue.value = value;
         };
 
+        const onApplyFilter = async (filterApplyDto: IFilterApply) => {
+            console.log(await countriesStore.getFilterCountries(filterApplyDto));
+            countryInfos.value = await countriesStore.getFilterCountries(filterApplyDto);
+        };
+
         onMounted(async () => {
-            countryInfos.value = await countriesStore.getInitCountries();
+            countryInfos.value = await countriesStore.getFilterCountries();
         });
 
-        return { countryInfos, switchValue, onSwitchClicked };
+        return { countryInfos, switchValue, onSwitchClicked, onApplyFilter };
     }
 });
 </script>
 
 <style></style>
+@/src/types/IFilter

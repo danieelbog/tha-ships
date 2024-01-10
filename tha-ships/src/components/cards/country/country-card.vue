@@ -1,6 +1,6 @@
 <template>
     <div class="card my-2">
-        <h3 class="card-header text-center">{{ countryInfo.name.official }}</h3>
+        <h3 class="card-header text-center">{{ countryInfo.name.common }}</h3>
         <div class="card-body text-center">
             <CountryCapital :capital="countryInfo.capital"></CountryCapital>
             <CountryPopulation :population="countryInfo.population"></CountryPopulation>

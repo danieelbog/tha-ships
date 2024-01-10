@@ -6,7 +6,7 @@
             :alt="countryInfo.flag" />
         <div class="transparent-mask"></div>
         <div class="card-img-overlay text-center">
-            <h3 class="text-center border-bottom">{{ countryInfo.name.official }}</h3>
+            <h3 class="text-center border-bottom">{{ countryInfo.name.common }}</h3>
             <FancyCountryCapital :capital="countryInfo.capital"></FancyCountryCapital>
             <FancyCountryPopulation :population="countryInfo.population"></FancyCountryPopulation>
             <FancyCountryBorders :borders="countryInfo.borders"></FancyCountryBorders>
