@@ -1,7 +1,7 @@
 <template>
     <div class="container main-wrapper">
         <div class="row">
-            <div class="col-12 p-2 my-2 border rounded">
+            <div class="col-12 p-2 my-4 border rounded">
                 <slot name="controls"></slot>
             </div>
             <div ref="contentContainer" class="col-12">
@@ -23,11 +23,12 @@ export default defineComponent({
 
 <style scoped>
 .main-wrapper {
-    height: calc(80vh);
+    height: 100vh;
+    max-height: 100vh;
 }
 
 .content-container {
     overflow: hidden;
-    height: 60vh;
+    height: 76vh;
 }
 </style>

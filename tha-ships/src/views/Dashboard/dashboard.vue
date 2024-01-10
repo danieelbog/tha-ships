@@ -4,18 +4,23 @@
             <CountryFilter></CountryFilter>
         </template>
         <template #content>
+            <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
             <CountryWrapper>
                 <template #default>
-                    <FancyCountryCard
-                        v-for="countryInfo in countryInfos"
-                        :key="countryInfo.name.official"
-                        :countryInfo="countryInfo"></FancyCountryCard>
-
-                    <!-- <CountryCard
-                        v-for="countryInfo in countryInfos"
-                        :key="countryInfo.name.official"
-                        :countryInfo="countryInfo">
-                    </CountryCard> -->
+                    <div v-if="switchValue">
+                        <FancyCountryCard
+                            v-for="countryInfo in countryInfos"
+                            :key="countryInfo.name.official"
+                            :countryInfo="countryInfo">
+                        </FancyCountryCard>
+                    </div>
+                    <div v-else>
+                        <CountryCard
+                            v-for="countryInfo in countryInfos"
+                            :key="countryInfo.name.official"
+                            :countryInfo="countryInfo">
+                        </CountryCard>
+                    </div>
                 </template>
             </CountryWrapper>
             <MapWrapper>
@@ -36,25 +41,32 @@ import MapWrapper from '@/components/layouts/wrappers/map/map-wrapper.vue';
 import CountryCard from '@/components/cards/country/country-card.vue';
 import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
 import CountryFilter from '@/components/filter/country-filter.vue';
+import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 
 export default defineComponent({
     components: {
         MainWrapper,
         CountryWrapper,
         MapWrapper,
-        // CountryCard,
+        CountryCard,
         FancyCountryCard,
-        CountryFilter
+        CountryFilter,
+        SwitchInput
     },
     setup() {
         const countryInfos = ref<Array<ICountryInfo>>([]);
         const countriesStore = useCountriesStore();
 
+        const switchValue = ref(true);
+        const onSwitchClicked = (value: boolean) => {
+            switchValue.value = value;
+        };
+
         onMounted(async () => {
             countryInfos.value = await countriesStore.getInitCountries();
         });
 
-        return { countryInfos };
+        return { countryInfos, switchValue, onSwitchClicked };
     }
 });
 </script>

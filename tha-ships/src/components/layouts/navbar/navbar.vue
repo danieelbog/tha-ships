@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg border-bottom p-2 mb-5 shadow-sm sticky-top bg-white">
+    <nav class="navbar navbar-expand-lg border-bottom p-2 mb-3 shadow-sm sticky-top bg-white">
         <div class="w-100 d-sm-flex d-grid justify-content-sm-between justify-content-middle">
             <router-link class="navbar-brand text-center text-sm-start m-0" to="/"
                 >Tha-Ships</router-link

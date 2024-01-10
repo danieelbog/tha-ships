@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent } from 'vue';
 import { ICountryInfo } from '@/types/ICountryInfo';
 
 import CountryCapital from './country-capital.vue';
@@ -32,3 +32,9 @@ export default defineComponent({
     }
 });
 </script>
+
+<style scoped>
+.card-img {
+    max-height: 275px;
+}
+</style>
