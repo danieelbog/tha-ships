@@ -1,6 +1,5 @@
 <template>
-    <div class="">
-        <label :for="id">{{ label }} <span v-if="showMandatory" class="text-danger">*</span></label>
+    <div class="form-floating">
         <select :id="id" class="form-select form-select" v-model="internalSelectedOption">
             <option
                 v-for="property in Object.keys(filterProperties)"
@@ -9,6 +8,10 @@
                 {{ filterProperties[property] }}
             </option>
         </select>
+        <label :for="id">
+            {{ label }}
+            <span v-if="showMandatory" class="text-danger">*</span>
+        </label>
     </div>
 </template>
 

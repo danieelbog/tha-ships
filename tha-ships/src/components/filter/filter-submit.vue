@@ -1,35 +1,46 @@
 <template>
-    <div>
-        <span v-if="showMandatory" class="text-danger">*</span>
-        <div class="input-group">
+    <div class="input-group d-flex">
+        <div class="form-floating">
             <input
-                v-model="internalsearchValue"
-                :type="inputType"
+                id="input-filter-search"
                 class="form-control"
-                placeholder="Filter value"
-                aria-describedby="searchButton" />
-            <button
-                id="searchButton"
-                class="btn btn-outline-danger"
-                type="button"
-                @click="resetFilterClick">
-                Reset Filter
-            </button>
-            <button
-                id="searchButton"
-                class="btn btn-outline-primary"
-                type="button"
-                @click="applyFilterClick">
-                Apply Filter
-            </button>
+                v-model="internalsearchValue"
+                :type="inputType" />
+            <label for="input-filter-search">
+                <div class="d-flex" style="pointer-events: stroke">
+                    <Info
+                        v-if="inputType == 'text'"
+                        :infoText="'Search using commas to separate values. For example: Greece, Russia, Turkey.'">
+                    </Info>
+                    <span v-if="showMandatory" class="text-danger">*</span>
+                </div>
+            </label>
         </div>
+        <button
+            id="searchButton"
+            class="btn btn-outline-danger"
+            type="button"
+            @click="resetFilterClick">
+            Reset Filter
+        </button>
+        <button
+            id="searchButton"
+            class="btn btn-outline-primary"
+            type="button"
+            @click="applyFilterClick">
+            Apply Filter
+        </button>
     </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue';
+import Info from '../layouts/info/info.vue';
 
 export default defineComponent({
+    components: {
+        Info
+    },
     props: {
         showMandatory: {
             type: Boolean,
