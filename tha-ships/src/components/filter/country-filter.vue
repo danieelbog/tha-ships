@@ -4,7 +4,8 @@
             <FormError
                 v-if="showErrorMessage"
                 :errorMessage="errorMessage"
-                :infoText="'If at least one options is selected, all the other form inputs should be selected too.'" />
+                :infoText="'If at least one options is selected, all the other form inputs should be selected too.'">
+            </FormError>
         </template>
         <template #propertySelect>
             <PropertiesSelect
@@ -13,7 +14,8 @@
                 :filterProperties="filterProperties"
                 :selectedOption="selectedProperty"
                 :showMandatory="showMandatory"
-                @optionSelected="updateCountrySelectedProperty"></PropertiesSelect>
+                @optionSelected="updateCountrySelectedProperty">
+            </PropertiesSelect>
         </template>
         <template #filterOptionSelect>
             <PropertiesSelect
@@ -24,16 +26,18 @@
                 "
                 :selectedOption="selectedFilter"
                 :showMandatory="showMandatory"
-                @optionSelected="updateSelectedFilterOption"></PropertiesSelect>
+                @optionSelected="updateSelectedFilterOption">
+            </PropertiesSelect>
         </template>
         <template #filterSearch>
-            <FilterSearch
+            <FilterSubmit
                 :showMandatory="showMandatory"
                 :searchValue="searchValue"
                 :selectedProperty="selectedProperty"
                 @searchValueEntered="onSearchValueEntered"
                 @resetFilterClicked="onResetFilterClicked"
-                @applyFilterClicked="onApplyFilterClicked"></FilterSearch>
+                @applyFilterClicked="onApplyFilterClicked">
+            </FilterSubmit>
         </template>
     </FilterWrapper>
 </template>
@@ -44,7 +48,7 @@ import { defineComponent, ref, computed, Ref } from 'vue';
 import PropertiesSelect from '@/components/select/properties-select.vue';
 import FilterWrapper from '@/components/layouts/wrappers/filter/filter-wrapper.vue';
 import FormError from '@/components/layouts/form-errors/form-error.vue';
-import FilterSearch from './filter-search.vue';
+import FilterSubmit from './filter-submit.vue';
 import {
     IFilter,
     filterProperties,
@@ -57,7 +61,7 @@ export default defineComponent({
         FilterWrapper,
         FormError,
         PropertiesSelect,
-        FilterSearch
+        FilterSubmit
     },
     setup(props, { emit }) {
         const searchValue: Ref<string | number> = ref('');

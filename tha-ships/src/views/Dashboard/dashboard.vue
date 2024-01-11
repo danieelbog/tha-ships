@@ -2,12 +2,13 @@
     <MainWrapper>
         <template #controls>
             <CountryFilter @applyFilter="onApplyFilter"></CountryFilter>
-        </template>
-        <template #content>
-            <div class="d-flex">
+            <CountrySorter></CountrySorter>
+            <div class="d-flex justify-content-end">
                 <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
                 <Info :infoText="'If on small screens, switch off the Fancy Mode'"></Info>
             </div>
+        </template>
+        <template #content>
             <CountryWrapper>
                 <template #default>
                     <div v-if="switchValue">
@@ -34,6 +35,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import { ICountryInfo } from '@/src/types/ICountryInfo';
+import { IFilter } from '@/src/types/IFilter';
 import { useCountriesStore } from '@/src/stores/countries/countries.store';
 
 import MainWrapper from '@/components/layouts/wrappers/main/main-wrapper.vue';
@@ -42,9 +44,9 @@ import MapWrapper from '@/components/layouts/wrappers/map/map-wrapper.vue';
 import CountryCard from '@/components/cards/country/country-card.vue';
 import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
 import CountryFilter from '@/components/filter/country-filter.vue';
+import CountrySorter from '@/components/sort/country-sort.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 import Info from '@/components/layouts/info/info.vue';
-import { IFilter } from '@/src/types/IFilter';
 
 export default defineComponent({
     components: {
@@ -54,6 +56,7 @@ export default defineComponent({
         CountryCard,
         FancyCountryCard,
         CountryFilter,
+        CountrySorter,
         SwitchInput,
         Info
     },
