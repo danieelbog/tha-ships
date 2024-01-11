@@ -1,7 +1,7 @@
 <template>
     <div class="container h-100">
         <div class="row">
-            <div class="col-12 p-2 my-3">
+            <div class="col-12 my-3">
                 <div class="accordion" id="controls-accordion">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
