@@ -56,6 +56,6 @@ export default defineComponent({
 }
 
 .card-img {
-    max-height: 275px;
+    max-height: 285px;
 }
 </style>

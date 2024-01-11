@@ -5,7 +5,7 @@
                 <slot name="controls"></slot>
             </div>
             <div class="col-12">
-                <div ref="contentContainer" class="row content-container">
+                <div ref="contentContainer" class="row pb-4 content-container">
                     <slot name="content"></slot>
                 </div>
             </div>
