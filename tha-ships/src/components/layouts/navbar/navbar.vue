@@ -2,7 +2,12 @@
     <nav class="navbar navbar-expand-lg border-bottom p-2 mb-sm-0 shadow-sm sticky-top bg-white">
         <div class="w-100 d-flex justify-content-between">
             <router-link class="navbar-brand text-center text-sm-start m-0" to="/">
-                Tha-Ships
+                <img
+                    src="../../../assets/images/logo.png"
+                    alt="Tha-ships logo"
+                    width="30"
+                    class="d-inline-block align-text-top img-fluid" />
+                Tha ships
             </router-link>
             <div class="d-flex">
                 <Navigation></Navigation>
