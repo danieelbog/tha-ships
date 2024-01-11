@@ -1,23 +1,8 @@
 <template>
     <div class="nav-menu-dropdown-button btn-group">
-        <button
-            type="button"
-            class="btn btn-outline-primary rounded"
-            data-bs-toggle="dropdown"
-            data-bs-display="static"
-            aria-expanded="false">
-            <span class="align-middle material-icons-round"> settings </span>
+        <button type="button" class="btn btn-outline-light" name="logout" @click="logout">
+            <span class="material-icons-outlined text-dark">logout</span>
         </button>
-        <ul class="nav-menu-dropdown-item dropdown-menu dropdown-menu-end p-1">
-            <li>
-                <button @click="logout" class="dropdown-item btn btn-light">
-                    <span class="align-middle material-icons-outlined text-danger">
-                        power_settings_new
-                    </span>
-                    <span class="m-2 align-middle">Logout</span>
-                </button>
-            </li>
-        </ul>
     </div>
 </template>
 
