@@ -4,8 +4,8 @@
             <div class="col-12 p-2 my-3 border rounded">
                 <slot name="controls"></slot>
             </div>
-            <div ref="contentContainer" class="col-12">
-                <div class="row content-container">
+            <div class="col-12">
+                <div ref="contentContainer" class="row content-container">
                     <slot name="content"></slot>
                 </div>
             </div>
@@ -14,10 +14,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+import { setContainerHeight } from '@/src/utils/wrapper-height-fix';
 
 export default defineComponent({
-    setup() {}
+    setup() {
+        const contentContainer = ref<HTMLElement>();
+
+        onMounted(() => {
+            if (contentContainer.value) setContainerHeight(contentContainer.value);
+        });
+
+        return {
+            contentContainer
+        };
+    }
 });
 </script>
 
@@ -29,6 +40,6 @@ export default defineComponent({
 
 .content-container {
     overflow: hidden;
-    height: 76vh;
+    height: 61vh;
 }
 </style>
