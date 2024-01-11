@@ -1,7 +1,14 @@
+type SortPropertiesOptions = 'asc' | 'desc';
+export const sortProperties: Record<SortPropertiesOptions, string> = {
+    asc: 'Ascending',
+    desc: 'Descending'
+};
+
 export interface IFilter {
     selectedProperty: FilterPropertiesOptions;
     selectedFilter: TextFilterOptions | NumberFilterOptions;
     searchValue: string | number;
+    sortOrder?: SortPropertiesOptions;
 }
 
 type FilterPropertiesOptions =

@@ -2,6 +2,10 @@ import { IFilter } from '../../types/IFilter';
 import { getProperty } from '../objects/property-traversal';
 
 export const getFilteredTextArray = <I>(filter: IFilter, items: I[]): I[] => {
+    if (!filter?.selectedProperty || !filter?.selectedFilter || !filter?.searchValue) {
+        return items;
+    }
+
     const searchValues = getSearchValuesFromSearchString(filter.searchValue.toString());
     return items.filter((item: I) => {
         const propertyValue = getProperty(item, filter.selectedProperty);
