@@ -7,7 +7,7 @@
                 v-model="internalsearchValue"
                 :type="inputType" />
             <label for="input-filter-search">
-                <div class="d-flex" style="pointer-events: stroke">
+                <div class="d-flex stroke">
                     <Info
                         v-if="inputType == 'text'"
                         :infoText="'Search using commas to separate values. For example: Greece, Russia, Turkey.'">

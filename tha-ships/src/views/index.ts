@@ -17,7 +17,7 @@ export const routes = [
         path: '/',
         name: 'Dashboard',
         meta: {
-            allowAnonymous: true,
+            allowAnonymous: false,
             noLayout: false,
             pageTitle: 'Tha-Ships | Dashboard',
             showInNavigation: false
