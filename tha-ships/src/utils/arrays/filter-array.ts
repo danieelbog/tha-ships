@@ -1,6 +1,6 @@
-import { ICountryInfo } from '../types/ICountryInfo';
-import { IFilterApply } from './../types/IFilter';
-import { getProperty } from './property-traversal';
+import { ICountryInfo } from '../../types/ICountryInfo';
+import { IFilterApply } from '../../types/IFilter';
+import { getProperty } from '../objects/property-traversal';
 
 export const getFilteredCountriesText = (
     filterApplyDto: IFilterApply,

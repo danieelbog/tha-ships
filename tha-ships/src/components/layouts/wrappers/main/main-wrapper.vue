@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
+import { setContainerHeight } from '@/src/utils/ui/wrapper-height-fix';
 import { defineComponent, onMounted, ref } from 'vue';
-import { setContainerHeight } from '@/src/utils/wrapper-height-fix';
 
 export default defineComponent({
     setup() {

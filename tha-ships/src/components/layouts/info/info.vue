@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { setTooltip, setPopover } from '@/src/utils/bootstrap-init';
+import { setTooltip } from '@/src/utils/ui/bootstrap-init';
 import { defineComponent, nextTick, onMounted, ref } from 'vue';
 
 export default defineComponent({

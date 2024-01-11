@@ -3,7 +3,10 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { ICountryInfo } from '@/types/ICountryInfo';
 import { IFilterApply } from '@/src/types/IFilter';
-import { getFilteredCountriesNumeric, getFilteredCountriesText } from '@/src/utils/filter-array';
+import {
+    getFilteredCountriesNumeric,
+    getFilteredCountriesText
+} from '@/src/utils/arrays/filter-array';
 
 export const useCountriesStore = defineStore('countries', () => {
     const initCountries = ref<ICountryInfo[]>([]);

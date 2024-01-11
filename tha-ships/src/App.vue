@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, defineAsyncComponent, onMounted } from 'vue';
-import { setBootstrapComponents } from '@/utils/bootstrap-init';
+import { setBootstrapComponents } from './utils/ui/bootstrap-init';
 import router from '@/router/index';
 
 export default defineComponent({
