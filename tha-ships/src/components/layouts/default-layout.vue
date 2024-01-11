@@ -1,7 +1,7 @@
 <template>
-    <div class="container-fluid g-0">
+    <div class="container-fluid d-flex flex-column min-vh-100">
         <NavBar></NavBar>
-        <router-view></router-view>
+        <router-view class="flex-grow-1"></router-view>
         <Footer></Footer>
     </div>
 </template>
