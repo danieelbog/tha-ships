@@ -14,15 +14,13 @@
                         <FancyCountryCard
                             v-for="(countryInfo, index) in countryInfos"
                             :key="index"
-                            :countryInfo="countryInfo">
-                        </FancyCountryCard>
+                            :countryInfo="countryInfo"></FancyCountryCard>
                     </div>
                     <div v-else>
                         <CountryCard
                             v-for="(countryInfo, index) in countryInfos"
                             :key="index"
-                            :countryInfo="countryInfo">
-                        </CountryCard>
+                            :countryInfo="countryInfo"></CountryCard>
                     </div>
                 </template>
             </CountryWrapper>
@@ -69,12 +67,12 @@ export default defineComponent({
         };
 
         const onApplyFilter = async (filterApplyDto: IFilterApply) => {
-            console.log(await countriesStore.getFilterCountries(filterApplyDto));
-            countryInfos.value = await countriesStore.getFilterCountries(filterApplyDto);
+            console.log(await countriesStore.getCountries(filterApplyDto));
+            countryInfos.value = await countriesStore.getCountries(filterApplyDto);
         };
 
         onMounted(async () => {
-            countryInfos.value = await countriesStore.getFilterCountries();
+            countryInfos.value = await countriesStore.getCountries();
         });
 
         return { countryInfos, switchValue, onSwitchClicked, onApplyFilter };
