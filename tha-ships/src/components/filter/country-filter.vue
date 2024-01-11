@@ -1,19 +1,22 @@
 <template>
     <FilterWrapper>
         <template #errorMessage>
-            <FilterError v-if="showErrorMessage" :errorMessage="errorMessage" />
+            <FormError
+                v-if="showErrorMessage"
+                :errorMessage="errorMessage"
+                :infoText="'If at least one options is selected, all the other form inputs should be selected too.'" />
         </template>
         <template #propertySelect>
-            <FilterDropdown
+            <PropertiesSelect
                 :id="'countryPropertyDropdown'"
                 :label="'Select Country property:'"
                 :filterProperties="filterProperties"
                 :selectedOption="selectedProperty"
                 :showMandatory="showMandatory"
-                @optionSelected="updateCountrySelectedProperty"></FilterDropdown>
+                @optionSelected="updateCountrySelectedProperty"></PropertiesSelect>
         </template>
         <template #filterOptionSelect>
-            <FilterDropdown
+            <PropertiesSelect
                 :id="'filterOptionDropdown'"
                 :label="'Select Filter option:'"
                 :filterProperties="
@@ -21,7 +24,7 @@
                 "
                 :selectedOption="selectedFilter"
                 :showMandatory="showMandatory"
-                @optionSelected="updateSelectedFilterOption"></FilterDropdown>
+                @optionSelected="updateSelectedFilterOption"></PropertiesSelect>
         </template>
         <template #filterSearch>
             <FilterSearch
@@ -38,9 +41,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed, Ref } from 'vue';
 
+import PropertiesSelect from '@/components/select/properties-select.vue';
 import FilterWrapper from '@/components/layouts/wrappers/filter/filter-wrapper.vue';
-import FilterError from './filter-error.vue';
-import FilterDropdown from './filter-dropdown.vue';
+import FormError from '@/components/form-errors/form-error.vue';
 import FilterSearch from './filter-search.vue';
 import {
     IFilter,
@@ -52,8 +55,8 @@ import {
 export default defineComponent({
     components: {
         FilterWrapper,
-        FilterError,
-        FilterDropdown,
+        FormError,
+        PropertiesSelect,
         FilterSearch
     },
     setup(props, { emit }) {
