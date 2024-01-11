@@ -43,7 +43,7 @@ import { defineComponent, ref, computed, Ref } from 'vue';
 
 import PropertiesSelect from '@/components/select/properties-select.vue';
 import FilterWrapper from '@/components/layouts/wrappers/filter/filter-wrapper.vue';
-import FormError from '@/components/form-errors/form-error.vue';
+import FormError from '@/components/layouts/form-errors/form-error.vue';
 import FilterSearch from './filter-search.vue';
 import {
     IFilter,
