@@ -7,7 +7,7 @@
                         <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
                         <FormError v-if="showErrorMessage" :errorMessage="errorMessage"></FormError>
                         <form @submit.prevent="submitForm">
-                            <div v-if="showTokenSignIn" class="form-floating mb-3" required>
+                            <div class="form-floating mb-3" required>
                                 <input
                                     id="token-input"
                                     v-model="token"
@@ -20,56 +20,11 @@
                                     </Info>
                                 </label>
                             </div>
-                            <div v-if="showNormalSignIn" class="form-floating mb-3">
-                                <input
-                                    v-model="email"
-                                    type="email"
-                                    class="form-control"
-                                    id="floatingInput"
-                                    placeholder="name@example.com" />
-                                <label for="floatingInput">Email address</label>
-                            </div>
-                            <div v-if="showNormalSignIn" class="form-floating mb-3">
-                                <input
-                                    v-model="password"
-                                    type="password"
-                                    class="form-control"
-                                    id="floatingPassword"
-                                    placeholder="Password" />
-                                <label for="floatingPassword">Password</label>
-                            </div>
-                            <div v-if="showRememberPassword" class="form-check mb-3">
-                                <input
-                                    v-model="rememberPassword"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    id="rememberPasswordCheck" />
-                                <label class="form-check-label" for="rememberPasswordCheck">
-                                    Remember password
-                                </label>
-                            </div>
                             <div class="d-grid">
                                 <button
                                     class="btn btn-primary btn-login text-uppercase fw-bold"
                                     type="submit">
                                     Sign in
-                                </button>
-                            </div>
-                            <hr v-if="showGoogleSignIn || showFacebookSignIn" class="my-4" />
-                            <div v-if="showGoogleSignIn" class="d-grid mb-2">
-                                <button
-                                    class="btn btn-google btn-login text-uppercase fw-bold"
-                                    type="button"
-                                    @click="signInWithGoogle">
-                                    Sign in with Google
-                                </button>
-                            </div>
-                            <div v-if="showFacebookSignIn" class="d-grid">
-                                <button
-                                    class="btn btn-facebook btn-login text-uppercase fw-bold"
-                                    type="button"
-                                    @click="signInWithFacebook">
-                                    Sign in with Facebook
                                 </button>
                             </div>
                         </form>
@@ -91,28 +46,6 @@ export default {
     components: {
         Info,
         FormError
-    },
-    props: {
-        showTokenSignIn: {
-            type: Boolean,
-            default: true
-        },
-        showNormalSignIn: {
-            type: Boolean,
-            default: false
-        },
-        showGoogleSignIn: {
-            type: Boolean,
-            default: false
-        },
-        showFacebookSignIn: {
-            type: Boolean,
-            default: false
-        },
-        showRememberPassword: {
-            type: Boolean,
-            default: false
-        }
     },
     setup() {
         const token = ref('');
