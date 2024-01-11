@@ -10,8 +10,7 @@
                 :filterProperties="filterProperties"
                 :selectedOption="selectedProperty"
                 :showMandatory="showMandatory"
-                @optionSelected="updateCountrySelectedProperty">
-            </FilterDropdown>
+                @optionSelected="updateCountrySelectedProperty"></FilterDropdown>
         </template>
         <template #filterOptionSelect>
             <FilterDropdown
@@ -22,8 +21,7 @@
                 "
                 :selectedOption="selectedFilter"
                 :showMandatory="showMandatory"
-                @optionSelected="updateSelectedFilterOption">
-            </FilterDropdown>
+                @optionSelected="updateSelectedFilterOption"></FilterDropdown>
         </template>
         <template #filterSearch>
             <FilterSearch
@@ -32,8 +30,7 @@
                 :selectedProperty="selectedProperty"
                 @searchValueEntered="onSearchValueEntered"
                 @resetFilterClicked="onResetFilterClicked"
-                @applyFilterClicked="onApplyFilterClicked">
-            </FilterSearch>
+                @applyFilterClicked="onApplyFilterClicked"></FilterSearch>
         </template>
     </FilterWrapper>
 </template>
@@ -46,7 +43,7 @@ import FilterError from './filter-error.vue';
 import FilterDropdown from './filter-dropdown.vue';
 import FilterSearch from './filter-search.vue';
 import {
-    IFilterApply,
+    IFilter,
     filterProperties,
     textFilterOptions,
     numberFilterOptions
@@ -137,7 +134,7 @@ export default defineComponent({
             selectedFilter: string,
             searchValue: string | number
         ) => {
-            emit('applyFilter', { selectedProperty, selectedFilter, searchValue } as IFilterApply);
+            emit('applyFilter', { selectedProperty, selectedFilter, searchValue } as IFilter);
         };
 
         return {

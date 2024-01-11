@@ -35,7 +35,7 @@ import { mapFilterPropertyToCountryProperty } from './property-mapper';
 //
 //******************************************
 
-export const getProperty = (obj: ICountryInfo, path: string): any => {
+export const getProperty = <O>(obj: O, path: string): any => {
     const propertyPath = mapFilterPropertyToCountryProperty(path);
 
     const keys = propertyPath.split('.');

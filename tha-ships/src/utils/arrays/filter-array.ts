@@ -1,15 +1,11 @@
-import { ICountryInfo } from '../../types/ICountryInfo';
-import { IFilterApply } from '../../types/IFilter';
+import { IFilter } from '../../types/IFilter';
 import { getProperty } from '../objects/property-traversal';
 
-export const getFilteredCountriesText = (
-    filterApplyDto: IFilterApply,
-    countries: ICountryInfo[]
-): ICountryInfo[] => {
-    const searchValues = getSearchValuesFromSearchString(filterApplyDto.searchValue.toString());
-    return countries.filter((countryInfo: ICountryInfo) => {
-        const propertyValue = getProperty(countryInfo, filterApplyDto.selectedProperty);
-        switch (filterApplyDto.selectedFilter) {
+export const getFilteredTextArray = <I>(filter: IFilter, items: I[]): I[] => {
+    const searchValues = getSearchValuesFromSearchString(filter.searchValue.toString());
+    return items.filter((item: I) => {
+        const propertyValue = getProperty(item, filter.selectedProperty);
+        switch (filter.selectedFilter) {
             case 'eq':
                 return searchValues.some((searchVal) => propertyValue === searchVal);
             case 'ne':
@@ -36,21 +32,18 @@ export const getFilteredCountriesText = (
     });
 };
 
-export const getFilteredCountriesNumeric = (
-    filterApplyDto: IFilterApply,
-    countries: ICountryInfo[]
-): ICountryInfo[] => {
-    return countries.filter((countryInfo: ICountryInfo) => {
-        const propertyValue = getProperty(countryInfo, filterApplyDto.selectedProperty);
-        switch (filterApplyDto.selectedFilter) {
+export const getFilteredNumericArray = <I>(filter: IFilter, items: I[]): I[] => {
+    return items.filter((item: I) => {
+        const propertyValue = getProperty(item, filter.selectedProperty);
+        switch (filter.selectedFilter) {
             case 'eq':
-                return propertyValue === filterApplyDto.searchValue;
+                return propertyValue === filter.searchValue;
             case 'ne':
-                return propertyValue !== filterApplyDto.searchValue;
+                return propertyValue !== filter.searchValue;
             case 'gt':
-                return propertyValue > filterApplyDto.searchValue;
+                return propertyValue > filter.searchValue;
             case 'lt':
-                return propertyValue < filterApplyDto.searchValue;
+                return propertyValue < filter.searchValue;
             default:
                 return false;
         }

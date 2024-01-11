@@ -1,4 +1,4 @@
-export interface IFilterApply {
+export interface IFilter {
     selectedProperty: FilterPropertiesOptions;
     selectedFilter: TextFilterOptions | NumberFilterOptions;
     searchValue: string | number;

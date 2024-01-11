@@ -44,7 +44,7 @@ import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-car
 import CountryFilter from '@/components/filter/country-filter.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 import Info from '@/components/layouts/info/info.vue';
-import { IFilterApply } from '@/src/types/IFilter';
+import { IFilter } from '@/src/types/IFilter';
 
 export default defineComponent({
     components: {
@@ -66,7 +66,7 @@ export default defineComponent({
             switchValue.value = value;
         };
 
-        const onApplyFilter = async (filterApplyDto: IFilterApply) => {
+        const onApplyFilter = async (filterApplyDto: IFilter) => {
             console.log(await countriesStore.getCountries(filterApplyDto));
             countryInfos.value = await countriesStore.getCountries(filterApplyDto);
         };
@@ -79,6 +79,3 @@ export default defineComponent({
     }
 });
 </script>
-
-<style></style>
-@/src/types/IFilter
