@@ -1,15 +1,17 @@
-import { api } from '@/api/index';
+import { ref } from 'vue';
+
 import { IAuthToken } from '@/src/types/IAuthToken';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { useMapboxStore } from '@/stores/mapboxgl/mapboxgl';
 
 export const useAuthStore = defineStore('auth', () => {
     const authToken = ref<IAuthToken>();
+    const mapboxStore = useMapboxStore();
 
     const setAuthToken = (authTokenDto: IAuthToken) => {
         authToken.value = authTokenDto;
-        updateAuthorizationHeader();
         saveAuthTokenToLocalStorage();
+        mapboxStore.setAuthToken(authToken.value);
     };
 
     const isAuthenticated = () => {
@@ -20,11 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const logout = async () => {
         clearAuthToken();
-        resetAuthorizationHeader();
-    };
-
-    const updateAuthorizationHeader = () => {
-        api.defaults.headers.common['Authorization'] = 'Token ' + authToken.value;
+        mapboxStore.resetAuthToken();
     };
 
     const saveAuthTokenToLocalStorage = () => {
@@ -41,10 +39,6 @@ export const useAuthStore = defineStore('auth', () => {
     const clearAuthToken = () => {
         if (authToken.value) authToken.value.token = '';
         localStorage.removeItem('authToken');
-    };
-
-    const resetAuthorizationHeader = () => {
-        api.defaults.headers.common['Authorization'] = '';
     };
 
     return {
