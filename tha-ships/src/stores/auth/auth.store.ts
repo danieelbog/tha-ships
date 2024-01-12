@@ -11,10 +11,15 @@ export const useAuthStore = defineStore('auth', () => {
     const setAuthToken = (authTokenDto: IAuthToken) => {
         authToken.value = authTokenDto;
         saveAuthTokenToLocalStorage();
-        mapboxStore.setAuthToken(authToken.value);
     };
 
-    const isAuthenticated = () => {
+    const getAuthToken = (): IAuthToken => {
+        return authToken.value && !authToken.value.remember
+            ? authToken.value
+            : getStoredAuthToken();
+    };
+
+    const isAuthenticated = (): IAuthToken => {
         return authToken.value && !authToken.value.remember
             ? authToken.value
             : getStoredAuthToken();
@@ -42,6 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
     };
 
     return {
+        getAuthToken,
         setAuthToken,
         isAuthenticated,
         logout

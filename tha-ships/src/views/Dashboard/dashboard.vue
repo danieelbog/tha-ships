@@ -15,18 +15,22 @@
                         <FancyCountryCard
                             v-for="(countryInfo, index) in countryInfos"
                             :key="index"
-                            :countryInfo="countryInfo"></FancyCountryCard>
+                            :countryInfo="countryInfo">
+                        </FancyCountryCard>
                     </div>
                     <div v-else>
                         <CountryCard
                             v-for="(countryInfo, index) in countryInfos"
                             :key="index"
-                            :countryInfo="countryInfo"></CountryCard>
+                            :countryInfo="countryInfo">
+                        </CountryCard>
                     </div>
                 </template>
             </CountryWrapper>
             <MapWrapper>
-                <template #default>Map</template>
+                <template #map>
+                    <MapCard></MapCard>
+                </template>
             </MapWrapper>
         </template>
     </MainWrapper>
@@ -49,6 +53,7 @@ import CountryFilter from '@/components/filter/country-filter.vue';
 import CountrySorter from '@/components/sort/country-sort.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 import Info from '@/components/layouts/info/info.vue';
+import MapCard from '@/components/cards/map/map-card.vue';
 
 export default defineComponent({
     components: {
@@ -60,7 +65,8 @@ export default defineComponent({
         CountryFilter,
         CountrySorter,
         SwitchInput,
-        Info
+        Info,
+        MapCard
     },
     setup() {
         const countryInfos = ref<Array<ICountryInfo>>([]);

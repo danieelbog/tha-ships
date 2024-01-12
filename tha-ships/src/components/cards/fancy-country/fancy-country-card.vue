@@ -1,5 +1,5 @@
 <template>
-    <div class="card bg-dark text-white mb-3">
+    <div class="card bg-dark text-white mb-3 border-0">
         <img
             :src="countryInfo.flags.png"
             class="card-img img-fluid rounded"
