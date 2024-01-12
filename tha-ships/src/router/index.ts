@@ -8,12 +8,12 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    const authStore = useAuthStore();
+    const { isAuthenticated } = useAuthStore();
     const isRouteAnonymous = to.matched.some((record) => record.meta.allowAnonymous);
 
-    if (!authStore.isAuthenticated() && !isRouteAnonymous) {
+    if (isAuthenticated() && !isRouteAnonymous) {
         try {
-            if (authStore.isAuthenticated()) next();
+            if (isAuthenticated()) next();
             else next({ path: '/login', query: { redirect: to.fullPath } });
         } catch (error) {
             console.error('Navigation error:', error);
@@ -25,3 +25,8 @@ router.beforeEach(async (to, from, next) => {
 });
 
 export default router;
+
+export const getRouterParameter = (): string => {
+    const route = router.currentRoute.value;
+    return route.params.country as string;
+};

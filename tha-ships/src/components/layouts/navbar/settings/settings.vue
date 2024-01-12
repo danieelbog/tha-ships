@@ -14,8 +14,9 @@ import router from '@/src/router';
 export default defineComponent({
     setup() {
         const logout = () => {
-            const authStore = useAuthStore();
-            authStore.logout();
+            const { logout } = useAuthStore();
+
+            logout();
             logoutRedirect();
         };
 

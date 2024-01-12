@@ -1,44 +1,69 @@
 <template>
-    <FormError v-if="showErrorMessage" :errorMessage="errorMessage"></FormError>
-    <div v-else class="h-100 border-0 bg-transparent pb-1" ref="mapContainer"></div>
+    <FormError v-if="showErrorMessage" :errorMessage="errorMessage" />
+    <div v-else class="h-100 border-0 bg-transparent stroke" ref="mapContainer"></div>
 </template>
 
 <script lang="ts">
-import { useMapboxStore } from '@/src/stores/mapboxgl/mapboxgl';
-import { defineComponent, onMounted, ref } from 'vue';
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
+import { useMapMarkerStore } from '@/src/stores/mapboxgl/map-marker.store';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { Map } from 'mapbox-gl';
-import FormError from '@/components/layouts/form-errors/form-error.vue';
 import { useAuthStore } from '@/src/stores/auth/auth.store';
+import { ICountryInfo } from '@/src/types/ICountryInfo';
+import FormError from '@/components/layouts/form-errors/form-error.vue';
+import { getRouterParameter } from '@/src/router';
 
 export default defineComponent({
     components: {
         FormError
     },
-    setup() {
+    props: {
+        countries: {
+            type: Array as () => ICountryInfo[],
+            required: true
+        }
+    },
+    setup(props) {
         const mapContainer = ref<HTMLElement | null>(null);
         const map = ref<Map | null>(null);
         const { getAuthToken } = useAuthStore();
         const { getMap } = useMapboxStore();
+        const { addMarkers, removeMarkers } = useMapMarkerStore();
         const showErrorMessage = ref(false);
         const errorMessage = ref('');
 
         const handleInitializationError = (error: any) => {
-            [showErrorMessage.value, errorMessage.value] = [true, error.message];
+            showErrorMessage.value = true;
+            errorMessage.value = error.message;
         };
 
         const initializeMap = () => {
-            [showErrorMessage.value, errorMessage.value] = [false, ''];
+            showErrorMessage.value = false;
+            errorMessage.value = '';
 
             map.value = getMap(mapContainer.value as HTMLElement, getAuthToken());
 
             map.value.on('load', () => {
                 map.value?.resize();
+                if (map.value) addMarkers(props.countries, map.value);
             });
 
             map.value.on('error', (response) => handleInitializationError(response.error));
         };
 
-        onMounted(initializeMap);
+        onMounted(() => {
+            initializeMap();
+        });
+
+        watch(
+            () => props.countries,
+            (newCountries) => {
+                if (map.value) {
+                    removeMarkers();
+                    if (map.value) addMarkers(newCountries, map.value);
+                }
+            }
+        );
 
         return { mapContainer, errorMessage, showErrorMessage };
     }

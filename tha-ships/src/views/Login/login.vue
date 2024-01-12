@@ -63,12 +63,12 @@ export default {
         const showErrorMessage = ref(false);
         const errorMessage = ref('');
         const rememberToken = ref(false);
+        const { setAuthToken } = useAuthStore();
 
         const loginRedirect = () => {
             router.push({ path: (router.currentRoute.value.query.redirect as string) ?? '/' });
         };
 
-        const authStore = useAuthStore();
         const submitForm = () => {
             if (!token.value || token.value.length < 1) {
                 showErrorMessage.value = true;
@@ -82,7 +82,7 @@ export default {
                 remember: rememberToken.value
             };
 
-            authStore.setAuthToken(authToken);
+            setAuthToken(authToken);
             loginRedirect();
         };
 

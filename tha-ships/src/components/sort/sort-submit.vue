@@ -20,11 +20,15 @@
 </template>
 
 <script lang="ts">
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
     setup(props, { emit }) {
+        const { unfocus } = useMapboxStore();
+
         const resetSortClick = () => {
+            unfocus();
             emit('resetSortClicked');
         };
 

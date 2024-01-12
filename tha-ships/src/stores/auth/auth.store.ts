@@ -2,11 +2,11 @@ import { ref } from 'vue';
 
 import { IAuthToken } from '@/src/types/IAuthToken';
 import { defineStore } from 'pinia';
-import { useMapboxStore } from '@/stores/mapboxgl/mapboxgl';
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 
 export const useAuthStore = defineStore('auth', () => {
     const authToken = ref<IAuthToken>();
-    const mapboxStore = useMapboxStore();
+    const { resetAuthToken } = useMapboxStore();
 
     const setAuthToken = (authTokenDto: IAuthToken) => {
         authToken.value = authTokenDto;
@@ -27,7 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     const logout = async () => {
         clearAuthToken();
-        mapboxStore.resetAuthToken();
+        resetAuthToken();
     };
 
     const saveAuthTokenToLocalStorage = () => {

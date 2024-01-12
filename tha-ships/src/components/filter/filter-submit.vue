@@ -36,6 +36,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue';
 import Info from '../layouts/info/info.vue';
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 
 export default defineComponent({
     components: {
@@ -59,6 +60,7 @@ export default defineComponent({
     },
     setup(props, { emit }) {
         const internalsearchValue = ref(props.searchValue);
+        const { unfocus } = useMapboxStore();
 
         watch(internalsearchValue, (newVal: string | number) => {
             emit(
@@ -80,6 +82,7 @@ export default defineComponent({
 
         const resetFilterClick = () => {
             emit('resetFilterClicked');
+            unfocus();
         };
 
         const applyFilterClick = () => {

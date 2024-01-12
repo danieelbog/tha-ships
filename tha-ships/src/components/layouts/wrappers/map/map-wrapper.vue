@@ -1,5 +1,5 @@
 <template>
-    <div class="col-6 mb-4">
+    <div class="col-6">
         <slot name="map"></slot>
     </div>
 </template>

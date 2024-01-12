@@ -5,7 +5,7 @@
             <CountryCapital :capital="countryInfo.capital"></CountryCapital>
             <CountryPopulation :population="countryInfo.population"></CountryPopulation>
             <CountryBorders :borders="countryInfo.borders"></CountryBorders>
-            <button type="button" class="btn btn-primary" @click="focusOnCountry">
+            <button type="button" class="btn btn-primary" @click="onFocusOnMapClick">
                 Focus on Map
             </button>
         </div>
@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ICountryInfo } from '@/types/ICountryInfo';
-import { useMapboxStore } from '@/src/stores/mapboxgl/mapboxgl';
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 
 import CountryCapital from './country-capital.vue';
 import CountryPopulation from './country-population.vue';
@@ -34,12 +34,17 @@ export default defineComponent({
         }
     },
     setup(props) {
-        const mapboxStore = useMapboxStore();
-        const focusOnCountry = () => {
-            mapboxStore.focusToCountry(props.countryInfo.latlng[0], props.countryInfo.latlng[1]);
+        const { focusToCountry } = useMapboxStore();
+
+        const onFocusOnMapClick = () => {
+            focusToCountry(
+                props.countryInfo.latlng[0],
+                props.countryInfo.latlng[1],
+                props.countryInfo.name.common
+            );
         };
 
-        return { focusOnCountry };
+        return { onFocusOnMapClick };
     }
 });
 </script>

@@ -29,7 +29,7 @@
             </CountryWrapper>
             <MapWrapper>
                 <template #map>
-                    <MapCard></MapCard>
+                    <MapCard :countries="countryInfos"></MapCard>
                 </template>
             </MapWrapper>
         </template>
@@ -54,6 +54,8 @@ import CountrySorter from '@/components/sort/country-sort.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 import Info from '@/components/layouts/info/info.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
+import { getRouterParameter } from '@/src/router';
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 
 export default defineComponent({
     components: {
@@ -70,25 +72,21 @@ export default defineComponent({
     },
     setup() {
         const countryInfos = ref<Array<ICountryInfo>>([]);
-        const countriesStore = useCountriesStore();
+        const { getCountries } = useCountriesStore();
 
         const switchValue = ref(true);
         const onSwitchClicked = (value: boolean) => {
             switchValue.value = value;
         };
 
+        const { focusToCountry } = useMapboxStore();
+
         const onApplyFilter = async (filter: IFilter) => {
-            if (typeof filter.searchValue == 'number') {
-                countryInfos.value = getFilteredNumericArray(
-                    filter,
-                    await countriesStore.getCountries()
-                );
-            } else {
-                countryInfos.value = getFilteredTextArray(
-                    filter,
-                    await countriesStore.getCountries()
-                );
-            }
+            const countries = await getCountries();
+            countryInfos.value =
+                typeof filter.searchValue === 'number'
+                    ? getFilteredNumericArray(filter, countries)
+                    : getFilteredTextArray(filter, countries);
         };
 
         const onApplySort = (filter: IFilter) => {
@@ -96,7 +94,24 @@ export default defineComponent({
         };
 
         onMounted(async () => {
-            countryInfos.value = await countriesStore.getCountries();
+            const countries = await getCountries();
+            const routeParameter = getRouterParameter();
+
+            if (!routeParameter) countryInfos.value = countries;
+
+            const filter: IFilter = {
+                selectedProperty: 'common',
+                searchValue: routeParameter,
+                selectedFilter: 'eq'
+            };
+
+            countryInfos.value = getFilteredTextArray(filter, await getCountries());
+
+            focusToCountry(
+                countryInfos.value[0].latlng[0],
+                countryInfos.value[0].latlng[1],
+                countryInfos.value[0].name.common
+            );
         });
 
         return { countryInfos, switchValue, onSwitchClicked, onApplyFilter, onApplySort };

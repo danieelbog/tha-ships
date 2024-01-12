@@ -14,7 +14,7 @@ export const routes = [
         component: () => import('./Login/login.vue')
     } as RouteRecordRaw,
     {
-        path: '/',
+        path: '/:country?',
         name: 'Dashboard',
         meta: {
             allowAnonymous: false,
