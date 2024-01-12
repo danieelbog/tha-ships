@@ -20,6 +20,16 @@
                                     </Info>
                                 </label>
                             </div>
+                            <div class="form-check mb-3">
+                                <input
+                                    v-model="rememberToken"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="rememberPasswordCheck" />
+                                <label class="form-check-label" for="rememberPasswordCheck">
+                                    Remember password
+                                </label>
+                            </div>
                             <div class="d-grid">
                                 <button
                                     class="btn btn-primary btn-login text-uppercase fw-bold"
@@ -41,6 +51,7 @@ import { useAuthStore } from '@/src/stores/auth/auth.store';
 import FormError from '@/components/layouts/form-errors/form-error.vue';
 import Info from '@/components/layouts/info/info.vue';
 import router from '@/src/router';
+import { IAuthToken } from '@/src/types/IAuthToken';
 
 export default {
     components: {
@@ -51,10 +62,7 @@ export default {
         const token = ref('');
         const showErrorMessage = ref(false);
         const errorMessage = ref('');
-
-        const email = ref('');
-        const password = ref('');
-        const rememberPassword = ref(false);
+        const rememberToken = ref(false);
 
         const loginRedirect = () => {
             router.push({ path: (router.currentRoute.value.query.redirect as string) ?? '/' });
@@ -69,24 +77,21 @@ export default {
             }
 
             showErrorMessage.value = false;
-            authStore.setAuthToken(token.value);
+            const authToken: IAuthToken = {
+                token: token.value,
+                remember: rememberToken.value
+            };
+
+            authStore.setAuthToken(authToken);
             loginRedirect();
         };
-
-        const signInWithGoogle = () => {};
-
-        const signInWithFacebook = () => {};
 
         return {
             token,
             showErrorMessage,
             errorMessage,
-            email,
-            password,
-            rememberPassword,
-            submitForm,
-            signInWithGoogle,
-            signInWithFacebook
+            rememberToken,
+            submitForm
         };
     }
 };

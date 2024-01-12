@@ -13,7 +13,6 @@ router.beforeEach(async (to, from, next) => {
 
     if (!authStore.isAuthenticated() && !isRouteAnonymous) {
         try {
-            await authStore.getAuthTokenFromLocalStorage();
             if (authStore.isAuthenticated()) next();
             else next({ path: '/login', query: { redirect: to.fullPath } });
         } catch (error) {
