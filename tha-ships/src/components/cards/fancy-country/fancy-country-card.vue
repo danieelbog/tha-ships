@@ -10,7 +10,9 @@
             <FancyCountryCapital :capital="countryInfo.capital"></FancyCountryCapital>
             <FancyCountryPopulation :population="countryInfo.population"></FancyCountryPopulation>
             <FancyCountryBorders :borders="countryInfo.borders"></FancyCountryBorders>
-            <a href="#" class="btn btn-primary position- bottom-0">Go somewhere</a>
+            <button type="button" class="btn btn-primary" @click="focusOnCountry">
+                Focus on Map
+            </button>
         </div>
     </div>
 </template>
@@ -18,6 +20,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ICountryInfo } from '@/types/ICountryInfo';
+import { useMapboxStore } from '@/src/stores/mapboxgl/mapboxgl';
 
 import FancyCountryCapital from './fancy-country-capital.vue';
 import FancyCountryPopulation from './fancy-country-population.vue';
@@ -34,6 +37,14 @@ export default defineComponent({
             type: Object as () => ICountryInfo,
             required: true
         }
+    },
+    setup(props) {
+        const mapboxStore = useMapboxStore();
+        const focusOnCountry = () => {
+            mapboxStore.focusToCountry(props.countryInfo.latlng[1], props.countryInfo.latlng[0]);
+        };
+
+        return { focusOnCountry };
     }
 });
 </script>

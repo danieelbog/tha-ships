@@ -19,5 +19,19 @@ export const useMapboxStore = defineStore('mapbox', () => {
         }));
     };
 
-    return { resetAuthToken, getMap };
+    const focusToCountry = (lng: number, lat: number) => {
+        if (!map.value) return;
+
+        const options = {
+            center: [lng, lat],
+            essential: true,
+            zoom: 6,
+            duration: 5000
+        };
+
+        //@ts-ignore, flyTo option in Ts is outdated.
+        map.value.flyTo(options);
+    };
+
+    return { resetAuthToken, getMap, focusToCountry };
 });
