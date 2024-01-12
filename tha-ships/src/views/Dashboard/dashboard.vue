@@ -43,6 +43,8 @@ import { IFilter } from '@/src/types/IFilter';
 import { useCountriesStore } from '@/src/stores/countries/countries.store';
 import { getFilteredNumericArray, getFilteredTextArray } from '@/src/utils/arrays/filter-array';
 import { sortArray } from '@/utils/arrays/sort-array';
+import { getRouterParameter } from '@/src/router';
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 
 import MainWrapper from '@/components/layouts/wrappers/main/main-wrapper.vue';
 import CountryWrapper from '@/components/layouts/wrappers/country/country-wrapper.vue';
@@ -54,8 +56,6 @@ import CountrySorter from '@/components/sort/country-sort.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 import Info from '@/components/layouts/info/info.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
-import { getRouterParameter } from '@/src/router';
-import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 
 export default defineComponent({
     components: {
@@ -79,8 +79,6 @@ export default defineComponent({
             switchValue.value = value;
         };
 
-        const { focusToCountry } = useMapboxStore();
-
         const onApplyFilter = async (filter: IFilter) => {
             const countries = await getCountries();
             countryInfos.value =
@@ -93,11 +91,17 @@ export default defineComponent({
             countryInfos.value = sortArray(filter, countryInfos.value);
         };
 
+        const { focusToCountry } = useMapboxStore();
         onMounted(async () => {
             const countries = await getCountries();
             const routeParameter = getRouterParameter();
 
-            if (!routeParameter) countryInfos.value = countries;
+            console.log('route', routeParameter);
+
+            if (!routeParameter) {
+                countryInfos.value = countries;
+                return;
+            }
 
             const filter: IFilter = {
                 selectedProperty: 'common',

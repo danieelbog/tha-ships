@@ -11,7 +11,6 @@ import { Map } from 'mapbox-gl';
 import { useAuthStore } from '@/src/stores/auth/auth.store';
 import { ICountryInfo } from '@/src/types/ICountryInfo';
 import FormError from '@/components/layouts/form-errors/form-error.vue';
-import { getRouterParameter } from '@/src/router';
 
 export default defineComponent({
     components: {
@@ -26,11 +25,12 @@ export default defineComponent({
     setup(props) {
         const mapContainer = ref<HTMLElement | null>(null);
         const map = ref<Map | null>(null);
+        const showErrorMessage = ref(false);
+        const errorMessage = ref('');
+
         const { getAuthToken } = useAuthStore();
         const { getMap } = useMapboxStore();
         const { addMarkers, removeMarkers } = useMapMarkerStore();
-        const showErrorMessage = ref(false);
-        const errorMessage = ref('');
 
         const handleInitializationError = (error: any) => {
             showErrorMessage.value = true;
