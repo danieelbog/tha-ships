@@ -1,6 +1,6 @@
 <template>
     <div class="form-floating">
-        <input :id="id" class="form-control" :type="inputType" v-model="localModelValue" />
+        <input :id="id" class="form-control" :type="inputType" v-model="localInputValue" />
         <label :for="id">
             <div class="d-flex stroke">
                 <Info v-if="inputType === 'text'" :infoText="infoText"></Info>
@@ -12,11 +12,15 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
+import Info from '@/components/layouts/info/info.vue';
 
 export default defineComponent({
+    components: {
+        Info
+    },
     props: {
         id: String,
-        modelValue: {
+        inputValue: {
             type: [String, Number]
         },
         inputType: {
@@ -33,20 +37,20 @@ export default defineComponent({
         }
     },
     setup(props, { emit }) {
-        const localModelValue = ref(props.modelValue);
-        watch(localModelValue, (newVal: string | number | undefined) => {
+        const localInputValue = ref(props.inputValue);
+        watch(localInputValue, (newVal: string | number | undefined) => {
             emit('updateInput', props.inputType == 'text' ? newVal?.toString() : Number(newVal));
         });
 
         watch(
-            () => props.modelValue,
+            () => props.inputValue,
             (newVal) => {
-                localModelValue.value = newVal;
+                localInputValue.value = newVal;
             }
         );
 
         return {
-            localModelValue
+            localInputValue
         };
     }
 });

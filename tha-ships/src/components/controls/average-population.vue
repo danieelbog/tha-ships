@@ -10,8 +10,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Info from '@/components/layouts/info/info.vue';
 
 export default defineComponent({
+    components: {
+        Info
+    },
     props: {
         averagePopulation: {
             type: Number,

@@ -44,7 +44,7 @@ export default defineComponent({
     },
     setup(props, { emit }) {
         const onClick = () => {
-            emit('click');
+            emit('submitClick');
         };
 
         const classes = computed(() => {

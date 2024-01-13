@@ -1,4 +1,3 @@
-import { ICountryInfo } from '@/types/ICountryInfo';
 import { mapFilterPropertyToCountryProperty } from './property-mapper';
 
 //******************************************

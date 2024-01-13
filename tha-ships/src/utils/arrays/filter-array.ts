@@ -2,13 +2,11 @@ import { IFilter } from '../../types/IFilter';
 import { getProperty } from '../objects/property-traversal';
 
 export const getFilteredTextArray = <I>(filter: IFilter, items: I[]): I[] => {
-    if (!filter?.selectedProperty || !filter?.selectedFilter || !filter?.searchValue) {
-        return items;
-    }
+    if (!filter?.selectedProperty || !filter?.selectedFilter || !filter?.searchValue) return items;
 
     const searchValues = getSearchValuesFromSearchString(filter.searchValue.toString());
     return items.filter((item: I) => {
-        const propertyValue = getProperty(item, filter.selectedProperty);
+        const propertyValue = getProperty(item, filter.selectedProperty as string);
         switch (filter.selectedFilter) {
             case 'eq':
                 return searchValues.some((searchVal) => propertyValue === searchVal);
@@ -37,17 +35,25 @@ export const getFilteredTextArray = <I>(filter: IFilter, items: I[]): I[] => {
 };
 
 export const getFilteredNumericArray = <I>(filter: IFilter, items: I[]): I[] => {
+    if (
+        !filter?.selectedProperty ||
+        !filter?.selectedFilter ||
+        !filter?.searchValue ||
+        filter.searchValue === undefined
+    )
+        return items;
+
     return items.filter((item: I) => {
-        const propertyValue = getProperty(item, filter.selectedProperty);
+        const propertyValue = getProperty(item, filter.selectedProperty as string);
         switch (filter.selectedFilter) {
             case 'eq':
-                return propertyValue === filter.searchValue;
+                return propertyValue === filter.searchValue!;
             case 'ne':
-                return propertyValue !== filter.searchValue;
+                return propertyValue !== filter.searchValue!;
             case 'gt':
-                return propertyValue > filter.searchValue;
+                return propertyValue > filter.searchValue!;
             case 'lt':
-                return propertyValue < filter.searchValue;
+                return propertyValue < filter.searchValue!;
             default:
                 return false;
         }

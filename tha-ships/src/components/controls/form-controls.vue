@@ -31,10 +31,11 @@
             <FormInput
                 id="input-filter-search"
                 label="Search Input:"
-                v-model="localFilter.searchValue"
+                :inputValue="localFilter.searchValue"
                 :type="inputType"
                 :infoText="'Search using commas to separate values. For example: Greece, Russia, Turkey.'"
-                :showMandatory="showMandatory">
+                :showMandatory="showMandatory"
+                @updateInput="onUpdateInput">
             </FormInput>
         </template>
         <template #sortPropertiesSelect>
@@ -51,7 +52,7 @@
                 label="Reset Control"
                 color="outline-danger"
                 width="w-100"
-                @click="onResetClick">
+                @submitClick="onResetClick">
             </FormButton>
         </template>
         <template #formSubmit>
@@ -60,7 +61,7 @@
                 label="Submit Control"
                 color="outline-primary"
                 width="w-100"
-                @click="onSubmitClick">
+                @submitClick="onSubmitClick">
             </FormButton>
         </template>
         <template #averagePopulation>
@@ -166,6 +167,10 @@ export default defineComponent({
             localFilter.value.sortOrder = value;
         };
 
+        const onUpdateInput = (value: string | number) => {
+            localFilter.value.searchValue = value;
+        };
+
         const { unfocus } = useMapboxStore();
         const onResetClick = () => {
             showErrorMessage.value = false;
@@ -227,7 +232,8 @@ export default defineComponent({
             onSortOptionsSelected,
             onResetClick,
             onSubmitClick,
-            onSwitchClicked
+            onSwitchClicked,
+            onUpdateInput
         };
     }
 });

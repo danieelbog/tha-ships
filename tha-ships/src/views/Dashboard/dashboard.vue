@@ -54,6 +54,7 @@ import CountryCard from '@/components/cards/country/country-card.vue';
 import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
 import FormControl from '@/components/controls/form-controls.vue';
+import { count } from 'console';
 
 export default defineComponent({
     components: {
@@ -84,18 +85,26 @@ export default defineComponent({
 
         const updateCountryInfos = async () => {
             const countries = await getCountries();
-            countryInfos.value =
-                typeof filter.value.searchValue === 'number'
-                    ? getFilteredNumericArray(filter.value, countries)
-                    : getFilteredTextArray(filter.value, countries);
 
-            if (countryInfos.value.length > 1 && filter.value.sortOrder)
-                countryInfos.value = sortArray(filter.value, countryInfos.value);
+            const filteredCountries =
+                typeof filter.value.searchValue === 'number'
+                    ? getFilteredNumericArray(filter.value, [...countries])
+                    : getFilteredTextArray(filter.value, [...countries]);
+
+            let sortedCountries = [...filteredCountries];
+
+            if (sortedCountries.length > 1 && filter.value.sortOrder) {
+                sortedCountries = sortArray(filter.value, sortedCountries);
+            }
+
+            countryInfos.value = sortedCountries;
 
             if (countryInfos.value.length === 1) {
                 const { latlng, name } = countryInfos.value[0];
                 focusToCountry(latlng[0], latlng[1], name.common);
-            } else unfocus();
+            } else {
+                unfocus();
+            }
         };
 
         const averagePopulation = computed(() => {
