@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref, Ref } from 'vue';
 import { ICountryInfo } from '@/src/types/ICountryInfo';
 import { IFilter } from '@/src/types/IFilter';
 import { useCountriesStore } from '@/src/stores/countries/countries.store';
@@ -46,6 +46,8 @@ import { getFilteredNumericArray, getFilteredTextArray } from '@/src/utils/array
 import { sortArray } from '@/utils/arrays/sort-array';
 import { getRouterParameter } from '@/src/router';
 import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
+import { readLocalCsv, readLocalCsvGrouped } from '@/src/utils/files/csv-reader';
+import { IShipData, ShipDataDictionary } from '@/src/types/IShipInfo';
 
 import MainWrapper from '@/components/layouts/wrappers/main/main-wrapper.vue';
 import CountryWrapper from '@/components/layouts/wrappers/country/country-wrapper.vue';
@@ -54,7 +56,6 @@ import CountryCard from '@/components/cards/country/country-card.vue';
 import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
 import FormControl from '@/components/controls/form-controls.vue';
-import { count } from 'console';
 
 export default defineComponent({
     components: {
@@ -132,7 +133,18 @@ export default defineComponent({
             }
         };
 
-        onMounted(initialize);
+        const csvData: Ref<ShipDataDictionary> = ref({});
+        onMounted(async () => {
+            initialize();
+            try {
+                const filePath = '../../../ship-data/data-fs-exercise.csv';
+                // Explicitly cast the result to the expected type
+                csvData.value = await readLocalCsvGrouped(filePath, 'vessel_id');
+                console.log(csvData.value);
+            } catch (error: any) {
+                console.error(error.message);
+            }
+        });
 
         return {
             filter,
