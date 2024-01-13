@@ -1,12 +1,7 @@
 <template>
     <MainWrapper>
         <template #controls>
-            <CountryFilter @applyFilter="onApplyFilter"></CountryFilter>
-            <CountrySorter @applySort="onApplySort"></CountrySorter>
-            <div class="d-flex justify-content-end">
-                <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
-                <Info :infoText="'If on small screens, switch off the Fancy Mode'"></Info>
-            </div>
+            <FormControl :filter="filter" @filterUpdate="onFilterUpdate"></FormControl>
         </template>
         <template #content>
             <CountryWrapper>
@@ -56,6 +51,8 @@ import CountrySorter from '@/components/sort/country-sort.vue';
 import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
 import Info from '@/components/layouts/info/info.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
+import ControlsWrapper from '@/components/layouts/wrappers/controls/controls-wrapper.vue';
+import FormControl from '@/components/controls/form-controls.vue';
 
 export default defineComponent({
     components: {
@@ -64,13 +61,16 @@ export default defineComponent({
         MapWrapper,
         CountryCard,
         FancyCountryCard,
-        CountryFilter,
-        CountrySorter,
-        SwitchInput,
-        Info,
-        MapCard
+        // CountryFilter,
+        // CountrySorter,
+        // SwitchInput,
+        // Info,
+        MapCard,
+        FormControl
     },
     setup() {
+        const filter = ref({} as IFilter);
+
         const countryInfos = ref<Array<ICountryInfo>>([]);
         const { getCountries } = useCountriesStore();
 
@@ -79,24 +79,32 @@ export default defineComponent({
             switchValue.value = value;
         };
 
-        const onApplyFilter = async (filter: IFilter) => {
+        const { focusToCountry, unfocus } = useMapboxStore();
+        const onFilterUpdate = async (filter: IFilter) => {
             const countries = await getCountries();
             countryInfos.value =
                 typeof filter.searchValue === 'number'
                     ? getFilteredNumericArray(filter, countries)
                     : getFilteredTextArray(filter, countries);
+
+            if (countryInfos.value.length == 1) {
+                focusToCountry(
+                    countryInfos.value[0].latlng[0],
+                    countryInfos.value[0].latlng[1],
+                    countryInfos.value[0].name.common
+                );
+            } else {
+                unfocus();
+            }
         };
 
         const onApplySort = (filter: IFilter) => {
             countryInfos.value = sortArray(filter, countryInfos.value);
         };
 
-        const { focusToCountry } = useMapboxStore();
         onMounted(async () => {
             const countries = await getCountries();
             const routeParameter = getRouterParameter();
-
-            console.log('route', routeParameter);
 
             if (!routeParameter) {
                 countryInfos.value = countries;
@@ -118,7 +126,7 @@ export default defineComponent({
             );
         });
 
-        return { countryInfos, switchValue, onSwitchClicked, onApplyFilter, onApplySort };
+        return { filter, countryInfos, switchValue, onSwitchClicked, onFilterUpdate, onApplySort };
     }
 });
 </script>

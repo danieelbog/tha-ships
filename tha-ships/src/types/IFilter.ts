@@ -1,17 +1,17 @@
-type SortPropertiesOptions = 'asc' | 'desc';
+export type SortPropertiesOptions = 'asc' | 'desc';
 export const sortProperties: Record<SortPropertiesOptions, string> = {
     asc: 'Ascending',
     desc: 'Descending'
 };
 
 export interface IFilter {
-    selectedProperty: FilterPropertiesOptions;
-    selectedFilter: TextFilterOptions | NumberFilterOptions;
-    searchValue: string | number;
+    selectedProperty?: FilterPropertiesOptions;
+    selectedFilter?: TextFilterOptions | NumberFilterOptions;
+    searchValue?: string | number;
     sortOrder?: SortPropertiesOptions;
 }
 
-type FilterPropertiesOptions =
+export type FilterPropertiesOptions =
     | 'common'
     | 'capital'
     | 'population'
@@ -29,7 +29,7 @@ export const filterProperties: Record<FilterPropertiesOptions, string> = {
     flag: 'Flag'
 };
 
-type NumberFilterOptions = 'eq' | 'ne' | 'gt' | 'lt';
+export type NumberFilterOptions = 'eq' | 'ne' | 'gt' | 'lt';
 export const numberFilterOptions: Record<NumberFilterOptions, string> = {
     eq: 'Is equal to',
     ne: 'Is not equal to',
@@ -37,7 +37,13 @@ export const numberFilterOptions: Record<NumberFilterOptions, string> = {
     lt: 'Is less than'
 };
 
-type TextFilterOptions = 'substringOf' | 'notSubstringOf' | 'eq' | 'ne' | 'startswith' | 'endswith';
+export type TextFilterOptions =
+    | 'substringOf'
+    | 'notSubstringOf'
+    | 'eq'
+    | 'ne'
+    | 'startswith'
+    | 'endswith';
 export const textFilterOptions: Record<TextFilterOptions, string> = {
     substringOf: 'Contains',
     notSubstringOf: 'Does not Contain',

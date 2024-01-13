@@ -34,7 +34,7 @@ export default defineComponent({
         },
         selectedOption: {
             type: String,
-            required: true
+            required: false
         },
         showMandatory: {
             type: Boolean,
@@ -43,7 +43,7 @@ export default defineComponent({
         }
     },
     setup(props, { emit }) {
-        const internalSelectedOption = ref('');
+        const internalSelectedOption = ref();
 
         watch(internalSelectedOption, (newVal) => {
             emit('optionSelected', newVal);
