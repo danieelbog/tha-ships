@@ -1,4 +1,4 @@
-export type ShipDataDictionary = Record<string, { [K: string]: string }[]>;
+export type ShipData = Record<string, { [K: string]: string }[]>;
 
 export interface IShipData {
     vessel_id: string;

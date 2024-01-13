@@ -46,8 +46,6 @@ import { getFilteredNumericArray, getFilteredTextArray } from '@/src/utils/array
 import { sortArray } from '@/utils/arrays/sort-array';
 import { getRouterParameter } from '@/src/router';
 import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
-import { readLocalCsv, readLocalCsvGrouped } from '@/src/utils/files/csv-reader';
-import { IShipData, ShipDataDictionary } from '@/src/types/IShipInfo';
 
 import MainWrapper from '@/components/layouts/wrappers/main/main-wrapper.vue';
 import CountryWrapper from '@/components/layouts/wrappers/country/country-wrapper.vue';
@@ -133,17 +131,8 @@ export default defineComponent({
             }
         };
 
-        const csvData: Ref<ShipDataDictionary> = ref({});
         onMounted(async () => {
             initialize();
-            try {
-                const filePath = '../../../ship-data/data-fs-exercise.csv';
-                // Explicitly cast the result to the expected type
-                csvData.value = await readLocalCsvGrouped(filePath, 'vessel_id');
-                console.log(csvData.value);
-            } catch (error: any) {
-                console.error(error.message);
-            }
         });
 
         return {

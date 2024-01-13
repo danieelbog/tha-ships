@@ -10,6 +10,8 @@ import { defineComponent, onMounted, ref, watch } from 'vue';
 import { Map } from 'mapbox-gl';
 import { useAuthStore } from '@/src/stores/auth/auth.store';
 import { ICountryInfo } from '@/src/types/ICountryInfo';
+import { useShipPositionsStore } from '@/src/stores/ships/ships-positions.store';
+import { useLineStore } from '@/src/stores/mapboxgl/map-line.store';
 import FormError from '@/components/layouts/forms/error/form-error.vue';
 
 export default defineComponent({
@@ -31,6 +33,8 @@ export default defineComponent({
         const { getAuthToken } = useAuthStore();
         const { getMap } = useMapboxStore();
         const { addMarkers, removeMarkers } = useMapMarkerStore();
+        const { getShipData } = useShipPositionsStore();
+        const { drawLines } = useLineStore();
 
         const handleInitializationError = (error: any) => {
             showErrorMessage.value = true;
@@ -43,9 +47,13 @@ export default defineComponent({
 
             map.value = getMap(mapContainer.value as HTMLElement, getAuthToken());
 
-            map.value.on('load', () => {
+            map.value.on('load', async () => {
                 map.value?.resize();
-                if (map.value) addMarkers(props.countries, map.value);
+                if (!map.value) return;
+                addMarkers(props.countries, map.value);
+                const shipData = await getShipData();
+                if (shipData) drawLines(map.value, shipData);
+                console.log('dat', shipData);
             });
 
             map.value.on('error', (response) => handleInitializationError(response.error));
