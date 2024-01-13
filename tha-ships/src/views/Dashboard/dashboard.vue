@@ -4,24 +4,25 @@
             <FormControl
                 :filter="filter"
                 :averagePopulation="averagePopulation"
+                :showFancy="showFancy"
                 @filterUpdate="onFilterUpdate"
-                @switchClicked="onSwitchClicked">
+                @showFancyClicked="onShowFancyClicked">
             </FormControl>
         </template>
         <template #content>
             <CountryWrapper>
                 <template #default>
-                    <div v-if="switchValue">
+                    <div v-if="showFancy">
                         <FancyCountryCard
-                            v-for="(countryInfo, index) in countryInfos"
-                            :key="index"
+                            v-for="countryInfo in countryInfos"
+                            :key="countryInfo.name.common"
                             :countryInfo="countryInfo">
                         </FancyCountryCard>
                     </div>
                     <div v-else>
                         <CountryCard
-                            v-for="(countryInfo, index) in countryInfos"
-                            :key="index"
+                            v-for="countryInfo in countryInfos"
+                            :key="countryInfo.name.common"
                             :countryInfo="countryInfo">
                         </CountryCard>
                     </div>
@@ -65,74 +66,71 @@ export default defineComponent({
         FormControl
     },
     setup() {
-        const filter = ref({} as IFilter);
+        const filter = ref<IFilter>({});
+        const countryInfos = ref<ICountryInfo[]>([]);
+        const showFancy = ref(true);
 
-        const countryInfos = ref<Array<ICountryInfo>>([]);
         const { getCountries } = useCountriesStore();
+        const { focusToCountry, unfocus } = useMapboxStore();
 
-        const switchValue = ref(true);
-        const onSwitchClicked = (value: boolean) => {
-            switchValue.value = value;
+        const onShowFancyClicked = (value: boolean) => {
+            showFancy.value = value;
         };
 
-        const { focusToCountry, unfocus } = useMapboxStore();
-        const onFilterUpdate = async (filter: IFilter) => {
+        const onFilterUpdate = async (newFilter: IFilter) => {
+            filter.value = newFilter;
+            updateCountryInfos();
+        };
+
+        const updateCountryInfos = async () => {
             const countries = await getCountries();
             countryInfos.value =
-                typeof filter.searchValue === 'number'
-                    ? getFilteredNumericArray(filter, countries)
-                    : getFilteredTextArray(filter, countries);
+                typeof filter.value.searchValue === 'number'
+                    ? getFilteredNumericArray(filter.value, countries)
+                    : getFilteredTextArray(filter.value, countries);
 
-            if (countryInfos.value.length > 1 && filter.sortOrder)
-                countryInfos.value = sortArray(filter, countryInfos.value);
+            if (countryInfos.value.length > 1 && filter.value.sortOrder)
+                countryInfos.value = sortArray(filter.value, countryInfos.value);
 
-            if (countryInfos.value.length == 1)
-                focusToCountry(
-                    countryInfos.value[0].latlng[0],
-                    countryInfos.value[0].latlng[1],
-                    countryInfos.value[0].name.common
-                );
-            else unfocus();
+            if (countryInfos.value.length === 1) {
+                const { latlng, name } = countryInfos.value[0];
+                focusToCountry(latlng[0], latlng[1], name.common);
+            } else unfocus();
         };
 
         const averagePopulation = computed(() => {
-            return countryInfos.value.reduce((accumulator, country, index, array) => {
-                accumulator += country.population;
-                if (index === array.length - 1) return accumulator / array.length;
-                return accumulator;
-            }, 0);
-        });
-
-        onMounted(async () => {
-            const countries = await getCountries();
-            const routeParameter = getRouterParameter();
-
-            if (!routeParameter) {
-                countryInfos.value = countries;
-                return;
-            }
-
-            const filter: IFilter = {
-                selectedProperty: 'common',
-                searchValue: routeParameter,
-                selectedFilter: 'eq'
-            };
-
-            countryInfos.value = getFilteredTextArray(filter, await getCountries());
-
-            focusToCountry(
-                countryInfos.value[0].latlng[0],
-                countryInfos.value[0].latlng[1],
-                countryInfos.value[0].name.common
+            return (
+                countryInfos.value.reduce(
+                    (accumulator, country) => accumulator + country.population,
+                    0
+                ) / countryInfos.value.length
             );
         });
+
+        const initialize = async () => {
+            const routeParameter = getRouterParameter();
+            const countries = await getCountries();
+
+            if (!routeParameter) countryInfos.value = countries;
+            else {
+                filter.value = {
+                    selectedProperty: 'common',
+                    searchValue: routeParameter,
+                    selectedFilter: 'eq',
+                    sortOrder: undefined
+                };
+                updateCountryInfos();
+            }
+        };
+
+        onMounted(initialize);
 
         return {
             filter,
             countryInfos,
-            switchValue,
+            showFancy,
             averagePopulation,
-            onSwitchClicked,
+            onShowFancyClicked,
             onFilterUpdate
         };
     }

@@ -89,7 +89,11 @@
         </template>
         <template #fancySwitch>
             <div class="d-flex justify-content-end">
-                <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
+                <SwitchInput
+                    :label="'Fancy Mode'"
+                    @switchClicked="onSwitchClicked"
+                    :switchValue="showFancy">
+                </SwitchInput>
                 <Info :infoText="'If on small screens, switch off the Fancy Mode'"></Info>
             </div>
         </template>
@@ -125,6 +129,10 @@ export default defineComponent({
         averagePopulation: {
             type: Number,
             required: false
+        },
+        showFancy: {
+            type: Boolean,
+            default: true
         }
     },
     setup(props, { emit }) {
@@ -136,9 +144,12 @@ export default defineComponent({
             localFilter.value = props.filter;
         });
 
-        watch(props.filter, (newFilter) => {
-            localFilter.value = newFilter;
-        });
+        watch(
+            () => props.filter,
+            (newFilter) => {
+                localFilter.value = newFilter;
+            }
+        );
 
         const showMandatory = computed(() => {
             if (localFilter.value.searchValue || localFilter.value.selectedFilter) return true;
@@ -207,10 +218,8 @@ export default defineComponent({
             emit('filterUpdate', localFilter.value);
         };
 
-        const switchValue = ref(true);
         const onSwitchClicked = (value: boolean) => {
-            switchValue.value = value;
-            emit('switchClicked', switchValue.value);
+            emit('showFancyClicked', value);
         };
 
         return {
@@ -220,7 +229,6 @@ export default defineComponent({
             showMandatory,
             filterTypes,
             inputType,
-            switchValue,
             onCountryOptionsSelected,
             onFilterOptionsSelected,
             onSortOptionsSelected,
