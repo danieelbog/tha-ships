@@ -4,7 +4,9 @@
             <FormControl
                 :filter="filter"
                 :averagePopulation="averagePopulation"
-                @filterUpdate="onFilterUpdate"></FormControl>
+                @filterUpdate="onFilterUpdate"
+                @switchClicked="onSwitchClicked">
+            </FormControl>
         </template>
         <template #content>
             <CountryWrapper>
@@ -49,14 +51,8 @@ import CountryWrapper from '@/components/layouts/wrappers/country/country-wrappe
 import MapWrapper from '@/components/layouts/wrappers/map/map-wrapper.vue';
 import CountryCard from '@/components/cards/country/country-card.vue';
 import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
-import CountryFilter from '@/components/filter/country-filter.vue';
-import CountrySorter from '@/components/sort/country-sort.vue';
-import SwitchInput from '@/src/components/layouts/switch/switch-input.vue';
-import Info from '@/components/layouts/info/info.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
-import ControlsWrapper from '@/components/layouts/wrappers/controls/controls-wrapper.vue';
 import FormControl from '@/components/controls/form-controls.vue';
-import { calculateAvergae } from '@/src/utils/arrays/calculator';
 
 export default defineComponent({
     components: {
@@ -65,10 +61,6 @@ export default defineComponent({
         MapWrapper,
         CountryCard,
         FancyCountryCard,
-        // CountryFilter,
-        // CountrySorter,
-        // SwitchInput,
-        // Info,
         MapCard,
         FormControl
     },
@@ -91,19 +83,16 @@ export default defineComponent({
                     ? getFilteredNumericArray(filter, countries)
                     : getFilteredTextArray(filter, countries);
 
-            if (countryInfos.value.length == 1) {
+            if (countryInfos.value.length > 1 && filter.sortOrder)
+                countryInfos.value = sortArray(filter, countryInfos.value);
+
+            if (countryInfos.value.length == 1)
                 focusToCountry(
                     countryInfos.value[0].latlng[0],
                     countryInfos.value[0].latlng[1],
                     countryInfos.value[0].name.common
                 );
-            } else {
-                unfocus();
-            }
-        };
-
-        const onApplySort = (filter: IFilter) => {
-            countryInfos.value = sortArray(filter, countryInfos.value);
+            else unfocus();
         };
 
         const averagePopulation = computed(() => {
@@ -144,8 +133,7 @@ export default defineComponent({
             switchValue,
             averagePopulation,
             onSwitchClicked,
-            onFilterUpdate,
-            onApplySort
+            onFilterUpdate
         };
     }
 });

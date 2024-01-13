@@ -210,6 +210,7 @@ export default defineComponent({
         const switchValue = ref(true);
         const onSwitchClicked = (value: boolean) => {
             switchValue.value = value;
+            emit('switchClicked', switchValue.value);
         };
 
         return {
