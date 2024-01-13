@@ -42,11 +42,8 @@
                     <div class="d-flex stroke">
                         <Info
                             v-if="inputType === 'text'"
-                            :infoText="
-                                inputType === 'text'
-                                    ? 'Search using commas to separate values. For example: Greece, Russia, Turkey.'
-                                    : ''
-                            "></Info>
+                            infoText="'Search using commas to separate values. For example: Greece, Russia, Turkey.'">
+                        </Info>
                         <span v-if="showMandatory" class="text-danger">*</span>
                     </div>
                 </label>
@@ -79,8 +76,23 @@
                 Submit Control
             </button>
         </template>
-        <template #averagePopulation>population</template>
-        <template #fancySwitch>fancy</template>
+        <template #averagePopulation>
+            <div v-if="averagePopulation">
+                <div class="d-flex justify-content-start align-items-end">
+                    The average population of selected countries is:
+                    <span class="ms-1 fw-bolder"> {{ averagePopulation }}</span>
+                    <Info
+                        infoText="The average population of selected countries is updated on filtering">
+                    </Info>
+                </div>
+            </div>
+        </template>
+        <template #fancySwitch>
+            <div class="d-flex justify-content-end">
+                <SwitchInput :label="'Fancy Mode'" @switchClicked="onSwitchClicked"></SwitchInput>
+                <Info :infoText="'If on small screens, switch off the Fancy Mode'"></Info>
+            </div>
+        </template>
         <template #submitControl> </template>
     </ControlsWrapper>
 </template>
@@ -88,25 +100,31 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { ValidationStatus, validateFilterInputs } from '@/src/utils/arrays/filter-validator';
+import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 import * as filterTypes from '@/src/types/IFilter';
 
 import ControlsWrapper from '@/components/layouts/wrappers/controls/controls-wrapper.vue';
 import FormError from '@/components/layouts/form-errors/form-error.vue';
 import FormFloatingSelect from './form-float-select.vue';
-import Info from '../layouts/info/info.vue';
-import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
+import Info from '@/components/layouts/info/info.vue';
+import SwitchInput from '@/components/layouts/switch/switch-input.vue';
 
 export default defineComponent({
     components: {
         ControlsWrapper,
         FormError,
         Info,
-        FormFloatingSelect
+        FormFloatingSelect,
+        SwitchInput
     },
     props: {
         filter: {
             type: Object as () => filterTypes.IFilter,
             required: true
+        },
+        averagePopulation: {
+            type: Number,
+            required: false
         }
     },
     setup(props, { emit }) {
@@ -189,6 +207,11 @@ export default defineComponent({
             emit('filterUpdate', localFilter.value);
         };
 
+        const switchValue = ref(true);
+        const onSwitchClicked = (value: boolean) => {
+            switchValue.value = value;
+        };
+
         return {
             localFilter,
             errorMessage,
@@ -196,11 +219,13 @@ export default defineComponent({
             showMandatory,
             filterTypes,
             inputType,
+            switchValue,
             onCountryOptionsSelected,
             onFilterOptionsSelected,
             onSortOptionsSelected,
             onResetClick,
-            onSubmitClick
+            onSubmitClick,
+            onSwitchClicked
         };
     }
 });

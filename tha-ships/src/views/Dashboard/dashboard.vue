@@ -1,7 +1,10 @@
 <template>
     <MainWrapper>
         <template #controls>
-            <FormControl :filter="filter" @filterUpdate="onFilterUpdate"></FormControl>
+            <FormControl
+                :filter="filter"
+                :averagePopulation="averagePopulation"
+                @filterUpdate="onFilterUpdate"></FormControl>
         </template>
         <template #content>
             <CountryWrapper>
@@ -32,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { ICountryInfo } from '@/src/types/ICountryInfo';
 import { IFilter } from '@/src/types/IFilter';
 import { useCountriesStore } from '@/src/stores/countries/countries.store';
@@ -53,6 +56,7 @@ import Info from '@/components/layouts/info/info.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
 import ControlsWrapper from '@/components/layouts/wrappers/controls/controls-wrapper.vue';
 import FormControl from '@/components/controls/form-controls.vue';
+import { calculateAvergae } from '@/src/utils/arrays/calculator';
 
 export default defineComponent({
     components: {
@@ -102,6 +106,14 @@ export default defineComponent({
             countryInfos.value = sortArray(filter, countryInfos.value);
         };
 
+        const averagePopulation = computed(() => {
+            return countryInfos.value.reduce((accumulator, country, index, array) => {
+                accumulator += country.population;
+                if (index === array.length - 1) return accumulator / array.length;
+                return accumulator;
+            }, 0);
+        });
+
         onMounted(async () => {
             const countries = await getCountries();
             const routeParameter = getRouterParameter();
@@ -126,7 +138,15 @@ export default defineComponent({
             );
         });
 
-        return { filter, countryInfos, switchValue, onSwitchClicked, onFilterUpdate, onApplySort };
+        return {
+            filter,
+            countryInfos,
+            switchValue,
+            averagePopulation,
+            onSwitchClicked,
+            onFilterUpdate,
+            onApplySort
+        };
     }
 });
 </script>
