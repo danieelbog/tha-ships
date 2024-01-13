@@ -38,7 +38,6 @@ export default defineComponent({
         },
         showMandatory: {
             type: Boolean,
-            required: false,
             default: false
         }
     },

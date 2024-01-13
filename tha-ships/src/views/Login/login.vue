@@ -48,10 +48,10 @@
 <script lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/src/stores/auth/auth.store';
-import FormError from '@/components/layouts/form-errors/form-error.vue';
+import { IAuthToken } from '@/src/types/IAuthToken';
+import FormError from '@/components/layouts/forms/error/form-error.vue';
 import Info from '@/components/layouts/info/info.vue';
 import router from '@/src/router';
-import { IAuthToken } from '@/src/types/IAuthToken';
 
 export default {
     components: {

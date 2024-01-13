@@ -21,33 +21,21 @@
             <FormFloatingSelect
                 id="filterOptionDropdown"
                 label="Select Filter option:"
-                :filterProperties="
-                    localFilter.selectedProperty === 'population'
-                        ? filterTypes.numberFilterOptions
-                        : filterTypes.textFilterOptions
-                "
+                :filterProperties="filterOptions"
                 :selectedOption="localFilter.selectedFilter"
                 :showMandatory="showMandatory"
                 @optionSelected="onFilterOptionsSelected">
             </FormFloatingSelect>
         </template>
         <template #searchInput>
-            <div class="form-floating">
-                <input
-                    id="input-filter-search"
-                    class="form-control"
-                    v-model="localFilter.searchValue"
-                    :type="inputType" />
-                <label for="input-filter-search">
-                    <div class="d-flex stroke">
-                        <Info
-                            v-if="inputType === 'text'"
-                            infoText="'Search using commas to separate values. For example: Greece, Russia, Turkey.'">
-                        </Info>
-                        <span v-if="showMandatory" class="text-danger">*</span>
-                    </div>
-                </label>
-            </div>
+            <FormInput
+                id="input-filter-search"
+                label="Search Input:"
+                v-model="localFilter.searchValue"
+                :type="inputType"
+                :infoText="'Search using commas to separate values. For example: Greece, Russia, Turkey.'"
+                :showMandatory="showMandatory">
+            </FormInput>
         </template>
         <template #sortPropertiesSelect>
             <FormFloatingSelect
@@ -55,47 +43,40 @@
                 label="Select Sort option:"
                 :filterProperties="filterTypes.sortProperties"
                 :selectedOption="localFilter.sortOrder"
-                @optionSelected="onSortOptionsSelected">
-            </FormFloatingSelect>
+                @optionSelected="onSortOptionsSelected"></FormFloatingSelect>
         </template>
         <template #formReset>
-            <button
+            <FormButton
                 name="Reset control values"
-                type="button"
-                class="btn btn-outline-danger w-100 d-flex justify-content-center align-items-center"
+                label="Reset Control"
+                color="outline-danger"
+                width="w-100"
                 @click="onResetClick">
-                Reset Control
-            </button>
+            </FormButton>
         </template>
         <template #formSubmit>
-            <button
+            <FormButton
                 name="Submit control values"
-                type="button"
-                class="btn btn-outline-primary w-100 w-100 d-flex justify-content-center align-items-center"
+                label="Submit Control"
+                color="outline-primary"
+                width="w-100"
                 @click="onSubmitClick">
-                Submit Control
-            </button>
+            </FormButton>
         </template>
         <template #averagePopulation>
-            <div v-if="averagePopulation">
-                <div class="d-flex justify-content-start align-items-end">
-                    The average population of selected countries is:
-                    <span class="ms-1 fw-bolder"> {{ averagePopulation }}</span>
-                    <Info
-                        infoText="The average population of selected countries is updated on filtering">
-                    </Info>
-                </div>
-            </div>
+            <AveragePopulationDisplay
+                v-if="averagePopulation"
+                :averagePopulation="averagePopulation"
+                infoText="The average population of selected countries is updated on filtering">
+            </AveragePopulationDisplay>
         </template>
         <template #fancySwitch>
-            <div class="d-flex justify-content-end">
-                <SwitchInput
-                    :label="'Fancy Mode'"
-                    @switchClicked="onSwitchClicked"
-                    :switchValue="showFancy">
-                </SwitchInput>
-                <Info :infoText="'If on small screens, switch off the Fancy Mode'"></Info>
-            </div>
+            <SwitchInput
+                label="Fancy Mode"
+                @switchClicked="onSwitchClicked"
+                :switchValue="showFancy">
+            </SwitchInput>
+            <Info infoText="If on small screens, switch off the Fancy Mode"></Info>
         </template>
         <template #submitControl> </template>
     </ControlsWrapper>
@@ -108,18 +89,24 @@ import { useMapboxStore } from '@/src/stores/mapboxgl/map-boxgl.store';
 import * as filterTypes from '@/src/types/IFilter';
 
 import ControlsWrapper from '@/components/layouts/wrappers/controls/controls-wrapper.vue';
-import FormError from '@/components/layouts/form-errors/form-error.vue';
-import FormFloatingSelect from './form-float-select.vue';
+import FormError from '@/components/layouts/forms/error/form-error.vue';
+import FormFloatingSelect from '@/components/layouts/forms/select/form-float-select.vue';
+import FormInput from '@/components/layouts/forms/input/form-input.vue';
+import FormButton from '@/components/layouts/forms/button/form-button.vue';
 import Info from '@/components/layouts/info/info.vue';
 import SwitchInput from '@/components/layouts/switch/switch-input.vue';
+import AveragePopulationDisplay from './average-population.vue';
 
 export default defineComponent({
     components: {
         ControlsWrapper,
         FormError,
-        Info,
         FormFloatingSelect,
-        SwitchInput
+        FormInput,
+        FormButton,
+        Info,
+        SwitchInput,
+        AveragePopulationDisplay
     },
     props: {
         filter: {
@@ -151,13 +138,18 @@ export default defineComponent({
             }
         );
 
-        const showMandatory = computed(() => {
-            if (localFilter.value.searchValue || localFilter.value.selectedFilter) return true;
-            return false;
+        const showMandatory = computed<boolean>(() => {
+            return !!localFilter.value.searchValue || !!localFilter.value.selectedFilter;
         });
 
         const inputType = computed(() =>
             localFilter.value.selectedProperty === 'population' ? 'number' : 'text'
+        );
+
+        const filterOptions = computed(() =>
+            localFilter.value.selectedProperty === 'population'
+                ? filterTypes.numberFilterOptions
+                : filterTypes.textFilterOptions
         );
 
         const onCountryOptionsSelected = (value: filterTypes.FilterPropertiesOptions) => {
@@ -229,6 +221,7 @@ export default defineComponent({
             showMandatory,
             filterTypes,
             inputType,
+            filterOptions,
             onCountryOptionsSelected,
             onFilterOptionsSelected,
             onSortOptionsSelected,

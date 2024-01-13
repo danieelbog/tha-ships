@@ -10,7 +10,7 @@ import { defineComponent, onMounted, ref, watch } from 'vue';
 import { Map } from 'mapbox-gl';
 import { useAuthStore } from '@/src/stores/auth/auth.store';
 import { ICountryInfo } from '@/src/types/ICountryInfo';
-import FormError from '@/components/layouts/form-errors/form-error.vue';
+import FormError from '@/components/layouts/forms/error/form-error.vue';
 
 export default defineComponent({
     components: {
