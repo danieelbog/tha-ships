@@ -39,9 +39,9 @@ export const useLineStore = defineStore('mapline', () => {
             source: `route-${vesselId}`,
             id: `line-background-${vesselId}`,
             paint: {
-                'line-color': generateColorBasedOnTimeUtc(receivedTimeUtc),
+                'line-color': 'yellow',
                 'line-width': 2,
-                'line-opacity': 0.4
+                'line-opacity': 1
             }
         });
 
@@ -50,7 +50,7 @@ export const useLineStore = defineStore('mapline', () => {
             source: `route-${vesselId}`,
             id: `line-dashed-${vesselId}`,
             paint: {
-                'line-color': 'yellow',
+                'line-color': generateColorBasedOnTimeUtc(receivedTimeUtc),
                 'line-width': 2,
                 'line-dasharray': [0, 4, 3]
             }
@@ -77,22 +77,21 @@ export const useLineStore = defineStore('mapline', () => {
     };
 
     const animateDashArray = (map: Map, vesselId: string, dashArraySequence: number[][]) => {
-        let step = 0;
-        function animate(timestamp: DOMHighResTimeStamp) {
-            const newStep = parseInt(((timestamp / 550) % dashArraySequence.length) + '', 10);
+        animate(map, vesselId, dashArraySequence, -1); // Start the animation with an initial step
+    };
 
-            if (newStep !== step) {
-                map.setPaintProperty(
-                    `line-dashed-${vesselId}`,
-                    'line-dasharray',
-                    dashArraySequence[step]
-                );
-                step = newStep;
-            }
+    const animate = (map: Map, vesselId: string, dashArraySequence: number[][], step: number) => {
+        const newStep = parseInt(((performance.now() / 550) % dashArraySequence.length) + '', 10);
 
-            requestAnimationFrame(animate);
+        if (newStep !== step) {
+            map.setPaintProperty(
+                `line-dashed-${vesselId}`,
+                'line-dasharray',
+                dashArraySequence[newStep]
+            );
         }
-        animate(0);
+
+        requestAnimationFrame(() => animate(map, vesselId, dashArraySequence, newStep));
     };
 
     return { drawLines };

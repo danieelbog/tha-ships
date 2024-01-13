@@ -53,7 +53,6 @@ export default defineComponent({
                 addMarkers(props.countries, map.value);
                 const shipData = await getShipData();
                 if (shipData) drawLines(map.value, shipData);
-                console.log('dat', shipData);
             });
 
             map.value.on('error', (response) => handleInitializationError(response.error));
