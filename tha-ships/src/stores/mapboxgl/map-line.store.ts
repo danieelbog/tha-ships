@@ -35,9 +35,9 @@ export const useLineStore = defineStore('mapline', () => {
 
     const addAnimatedDashLine = (map: Map, vesselId: string, receivedTimeUtc: string) => {
         map.addLayer({
-            type: 'line',
-            source: `route-${vesselId}`,
             id: `line-background-${vesselId}`,
+            source: `route-${vesselId}`,
+            type: 'line',
             paint: {
                 'line-color': 'yellow',
                 'line-width': 2,
@@ -46,9 +46,9 @@ export const useLineStore = defineStore('mapline', () => {
         });
 
         map.addLayer({
-            type: 'line',
-            source: `route-${vesselId}`,
             id: `line-dashed-${vesselId}`,
+            source: `route-${vesselId}`,
+            type: 'line',
             paint: {
                 'line-color': generateColorBasedOnTimeUtc(receivedTimeUtc),
                 'line-width': 2,
@@ -77,7 +77,7 @@ export const useLineStore = defineStore('mapline', () => {
     };
 
     const animateDashArray = (map: Map, vesselId: string, dashArraySequence: number[][]) => {
-        animate(map, vesselId, dashArraySequence, -1); // Start the animation with an initial step
+        animate(map, vesselId, dashArraySequence, -1);
     };
 
     const animate = (map: Map, vesselId: string, dashArraySequence: number[][], step: number) => {

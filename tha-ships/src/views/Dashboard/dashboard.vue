@@ -12,25 +12,27 @@
         <template #content>
             <CountryWrapper>
                 <template #default>
-                    <div v-if="showFancy">
-                        <FancyCountryCard
-                            v-for="countryInfo in countryInfos"
-                            :key="countryInfo.name.common"
-                            :countryInfo="countryInfo">
-                        </FancyCountryCard>
+                    <Loader v-if="showLoader"></Loader>
+                    <div v-if="countryInfos.length > 0 || showLoader">
+                        <template v-if="showFancy">
+                            <FancyCountryCard
+                                v-for="countryInfo in countryInfos"
+                                :key="countryInfo.name.common"
+                                :countryInfo="countryInfo"></FancyCountryCard>
+                        </template>
+                        <template v-else>
+                            <CountryCard
+                                v-for="countryInfo in countryInfos"
+                                :key="countryInfo.name.common"
+                                :countryInfo="countryInfo"></CountryCard>
+                        </template>
                     </div>
-                    <div v-else>
-                        <CountryCard
-                            v-for="countryInfo in countryInfos"
-                            :key="countryInfo.name.common"
-                            :countryInfo="countryInfo">
-                        </CountryCard>
-                    </div>
+                    <h4 v-else class="p-2">No Countries Found</h4>
                 </template>
             </CountryWrapper>
             <MapWrapper>
                 <template #map>
-                    <MapCard :countries="countryInfos"></MapCard>
+                    <MapCard :countryInfos="countryInfos"></MapCard>
                 </template>
             </MapWrapper>
         </template>
@@ -54,6 +56,7 @@ import CountryCard from '@/components/cards/country/country-card.vue';
 import FancyCountryCard from '@/components/cards/fancy-country/fancy-country-card.vue';
 import MapCard from '@/components/cards/map/map-card.vue';
 import FormControl from '@/components/controls/form-controls.vue';
+import Loader from '@/components/layouts/loader/loader.vue';
 
 export default defineComponent({
     components: {
@@ -63,12 +66,14 @@ export default defineComponent({
         CountryCard,
         FancyCountryCard,
         MapCard,
-        FormControl
+        FormControl,
+        Loader
     },
     setup() {
         const filter = ref<IFilter>({});
         const countryInfos = ref<ICountryInfo[]>([]);
         const showFancy = ref(true);
+        const showLoader = ref(true);
 
         const { getCountries } = useCountriesStore();
         const { focusToCountry, unfocus } = useMapboxStore();
@@ -83,6 +88,7 @@ export default defineComponent({
         };
 
         const updateCountryInfos = async () => {
+            showLoader.value = true;
             const countries = await getCountries();
 
             const filteredCountries =
@@ -92,18 +98,16 @@ export default defineComponent({
 
             let sortedCountries = [...filteredCountries];
 
-            if (sortedCountries.length > 1 && filter.value.sortOrder) {
+            if (sortedCountries.length > 1 && filter.value.sortOrder)
                 sortedCountries = sortArray(filter.value, sortedCountries);
-            }
 
             countryInfos.value = sortedCountries;
 
             if (countryInfos.value.length === 1) {
                 const { latlng, name } = countryInfos.value[0];
                 focusToCountry(latlng[0], latlng[1], name.common);
-            } else {
-                unfocus();
-            }
+            } else unfocus();
+            showLoader.value = false;
         };
 
         const averagePopulation = computed(() => {
@@ -129,6 +133,8 @@ export default defineComponent({
                 };
                 updateCountryInfos();
             }
+
+            showLoader.value = false;
         };
 
         onMounted(async () => {
@@ -140,6 +146,7 @@ export default defineComponent({
             countryInfos,
             showFancy,
             averagePopulation,
+            showLoader,
             onShowFancyClicked,
             onFilterUpdate
         };

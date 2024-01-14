@@ -19,7 +19,7 @@ export default defineComponent({
         FormError
     },
     props: {
-        countries: {
+        countryInfos: {
             type: Array as () => ICountryInfo[],
             required: true
         }
@@ -50,7 +50,7 @@ export default defineComponent({
             map.value.on('load', async () => {
                 map.value?.resize();
                 if (!map.value) return;
-                addMarkers(props.countries, map.value);
+                addMarkers(props.countryInfos, map.value);
                 const shipData = await getShipData();
                 if (shipData) drawLines(map.value, shipData);
             });
@@ -63,7 +63,7 @@ export default defineComponent({
         });
 
         watch(
-            () => props.countries,
+            () => props.countryInfos,
             (newCountries) => {
                 if (map.value) {
                     removeMarkers();
