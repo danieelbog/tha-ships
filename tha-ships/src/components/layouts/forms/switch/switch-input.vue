@@ -4,7 +4,7 @@
             class="form-check-input"
             type="checkbox"
             id="flexSwitchCheckDefault"
-            v-model="internalSwitchValue" />
+            v-model="localSwitchValue" />
         <label class="form-check-label" for="flexSwitchCheckDefault">{{ label }}</label>
     </div>
 </template>
@@ -25,21 +25,21 @@ export default defineComponent({
         }
     },
     setup(props, { emit }) {
-        const internalSwitchValue = ref(true);
+        const localSwitchValue = ref(true);
 
-        watch(internalSwitchValue, (value) => {
+        watch(localSwitchValue, (value) => {
             emit('switchClicked', value);
         });
 
         watch(
             () => props.switchValue,
             (newVal) => {
-                internalSwitchValue.value = newVal;
+                localSwitchValue.value = newVal;
             }
         );
 
         return {
-            internalSwitchValue
+            localSwitchValue
         };
     }
 });

@@ -95,7 +95,7 @@ import FormFloatingSelect from '@/components/layouts/forms/select/form-float-sel
 import FormInput from '@/components/layouts/forms/input/form-input.vue';
 import FormButton from '@/components/layouts/forms/button/form-button.vue';
 import Info from '@/components/layouts/info/info.vue';
-import SwitchInput from '@/components/layouts/switch/switch-input.vue';
+import SwitchInput from '@/components/layouts/forms/switch/switch-input.vue';
 import AveragePopulationDisplay from './average-population.vue';
 
 export default defineComponent({
