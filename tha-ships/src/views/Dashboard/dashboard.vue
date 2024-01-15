@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, Ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { ICountryInfo } from '@/src/types/ICountryInfo';
 import { IFilter } from '@/src/types/IFilter';
 import { useCountriesStore } from '@/src/stores/countries/countries.store';

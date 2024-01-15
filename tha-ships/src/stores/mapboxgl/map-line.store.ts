@@ -56,6 +56,10 @@ export const useLineStore = defineStore('mapline', () => {
             }
         });
 
+        animateDashArray(map, vesselId);
+    };
+
+    const animateDashArray = (map: Map, vesselId: string) => {
         const dashArraySequence = [
             [0, 4, 3],
             [0.5, 4, 2.5],
@@ -73,10 +77,6 @@ export const useLineStore = defineStore('mapline', () => {
             [0, 3.5, 3, 0.5]
         ];
 
-        animateDashArray(map, vesselId, dashArraySequence);
-    };
-
-    const animateDashArray = (map: Map, vesselId: string, dashArraySequence: number[][]) => {
         animate(map, vesselId, dashArraySequence, -1);
     };
 

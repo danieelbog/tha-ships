@@ -55,7 +55,9 @@ export default defineComponent({
                 if (shipData) drawLines(map.value, shipData);
             });
 
-            map.value.on('error', (response) => handleInitializationError(response.error));
+            map.value.on('error', (error) => {
+                handleInitializationError(error);
+            });
         };
 
         onMounted(() => {

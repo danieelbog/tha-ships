@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9 align-items-end align-self-end my-1">
+            <div class="col-md-9 d-flex justify-content-end my-1">
                 <slot name="checkboxes"></slot>
             </div>
             <div class="col-md-3 d-flex justify-content-end">

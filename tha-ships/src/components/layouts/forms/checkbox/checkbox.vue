@@ -21,9 +21,9 @@ export default {
         }
     },
     setup(props, { emit }) {
-        const localCheckValue = ref(true);
+        const localCheckValue = ref(false);
         watch(localCheckValue, (value) => {
-            emit('switchClicked', value);
+            emit('checkboxClicked', value);
         });
 
         watch(
