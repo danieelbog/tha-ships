@@ -11,7 +11,7 @@ router.beforeEach(async (to, from, next) => {
     const { isAuthenticated } = useAuthStore();
     const isRouteAnonymous = to.matched.some((record) => record.meta.allowAnonymous);
 
-    if (isAuthenticated() && !isRouteAnonymous) {
+    if (!isAuthenticated() && !isRouteAnonymous) {
         try {
             if (isAuthenticated()) next();
             else next({ path: '/login', query: { redirect: to.fullPath } });
